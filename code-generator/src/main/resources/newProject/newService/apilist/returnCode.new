@@ -1,0 +1,24 @@
+package {rootPackage};
+
+import aatrox.infra.apilist.JsonReturnCodeEnum;
+
+public enum ReturnCodeEnum implements JsonReturnCodeEnum {
+    /**模块返回code**/
+
+    ;
+    private String msg;
+
+    ReturnCodeEnum(String msg){
+        this.msg = msg;
+    }
+
+    @Override
+    public String getMessage() {
+        return msg;
+    }
+
+    @Override
+    public String getStatus() {
+        return name();
+    }
+}

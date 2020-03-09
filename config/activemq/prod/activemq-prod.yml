@@ -1,0 +1,4 @@
+basic:
+  activemq:
+    url: tcp://172.16.72.182:61616
+    sessionSize: 20

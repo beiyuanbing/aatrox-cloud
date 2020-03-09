@@ -1,0 +1,26 @@
+package {rootPackage};
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;;
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.netflix.feign.EnableFeignClients;
+import org.springframework.cloud.netflix.hystrix.EnableHystrix;
+import org.springframework.context.annotation.Import;
+import aatrox.infra.common.logger.BootstrapLogDoneFilter;
+import aatrox.infra.web.config.RedisSessionConfig;
+import aatrox.infra.web.WebBaseConfig;
+
+@EnableDiscoveryClient
+@EnableCircuitBreaker
+@SpringBootApplication
+//TODO 扫描包按apilist配置
+@EnableFeignClients
+@EnableHystrix
+@Import({WebBaseConfig.class,RedisSessionConfig.class,})
+public class {webAppName} {
+    public static void main(String[] args) {
+        SpringApplication.run({webAppName}.class, args);
+        BootstrapLogDoneFilter.bootstrapDone();
+    }
+}

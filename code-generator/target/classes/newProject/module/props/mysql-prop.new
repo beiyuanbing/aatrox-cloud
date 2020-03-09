@@ -1,0 +1,7 @@
+
+#mysql start
+basic.mysql.url=
+basic.mysql.username=
+basic.mysql.password=
+basic.mybatis.aliasesPackage={package}
+#mysql end

@@ -1,0 +1,28 @@
+package {rootPackage}.remote;
+
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import aatrox.infra.apilist.validate.IdForm;
+
+@Service
+public class FirstRemote {
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    //@Autowired
+    //private XXXXFeign xXXXFeign;
+
+    /**
+     * 增删改的方法可不配套降级down方法
+     * 查询的方法建议配套降级down方法
+     */
+    @HystrixCommand(fallbackMethod = "echoIdDown")
+    public String echoId(IdForm form) {
+        return form.getId();
+    }
+
+    public String echoIdDown(IdForm form,Throwable e) {
+        logger.error(e.getMessage(),e);
+        return "error";
+    }
+}

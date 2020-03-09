@@ -1,0 +1,5 @@
+
+
+# Application Listeners
+org.springframework.boot.SpringApplicationRunListener=\
+com.aatrox.logservice.listener.DemoListener

@@ -1,0 +1,34 @@
+spring:
+  application:
+    name: web
+  profiles:
+    active: dev
+  cloud:
+    config:
+      #    uri: http://clound.byb.eureka.com:61100/   #Config server的uri
+      # uri: http://clound.byb.eureka.com:61100/
+      profile: dev                          #指定的环境
+      label: master                        #指定分支
+      discovery:
+        enabled: true                     #开启配置服务发现
+        serviceId: config-server        #配置中心服务名
+      fail-fast: true                        #快速失败
+      retry:
+        initial-interval: 1100             #首次重试间隔时间，默认1000毫秒
+        multiplier: 1.1D                    #下一次重试间隔时间的乘数，比如开始1000，下一次就是1000*1.1=1100
+        max-interval: 2000              #最大重试时间，默认2000
+        max-attempts: 3                 #最大重试次数，默认6次
+      name: redis,activemq,solr,rabbitmq  #指定了配置文件的应用名//如果没给的话，就会默认使用项目名的spring.application.name的值
+server:
+  port: 61080
+  servlet:
+    context-path: /web
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 10
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+
+  client:
+    serviceUrl:
+      defaultZone: http://clound.byb.eureka.com:61000/eureka/

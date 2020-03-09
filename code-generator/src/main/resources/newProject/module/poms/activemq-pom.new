@@ -1,0 +1,4 @@
+        <dependency>
+            <groupId>aatrox.infra</groupId>
+            <artifactId>feature-activemq</artifactId>
+        </dependency>

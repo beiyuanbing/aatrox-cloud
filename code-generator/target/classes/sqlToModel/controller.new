@@ -1,0 +1,82 @@
+package {webRootPackage}.controller.security;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.web.bind.annotation.*;
+import {rootPackage}.apilist.form.{objectName}QueryForm;
+import {rootPackage}.apilist.form.{objectName}InsertForm;
+import {rootPackage}.apilist.form.{objectName}EditForm;
+import {rootPackage}.apilist.model.{objectName}Model;
+import {webRootPackage}.config.AuthorityAnnotation;
+import {webRootPackage}.config.AuthorityAnnotationEnums;
+import {webRootPackage}.controller.WebBaseController;
+import {webRootPackage}.remote.{objectName}ManagerRemote;
+import com.aatrox.apilist.validate.IdForm;
+
+/**
+ * {desc}门面层Controller
+ * Created by {author} on {date}
+ * //自行修改swagger，权限标识
+ */
+@Lazy
+@RestController
+@RequestMapping(value = "/security/{objectNameSmall}", produces = {"application/json;charset=UTF-8"})
+@Api(value = ApiSwaggerTags.{objectNameBig}_TAG, description = "{desc}管理相关")
+public class {objectName}ManagerController extends WebBaseController {
+    @Autowired
+    private {objectName}ManagerRemote {objectNameSmall}ManagerRemote;
+
+    @AuthorityAnnotation(AuthorityAnnotationEnums.)
+    @GetMapping(value = "/selectById")
+    @ApiOperation(value = "获取{desc}信息", tags = ApiSwaggerTags.{objectNameBig}_TAG)
+    @ApiResponses({
+            @ApiResponse(message = "{desc}信息数据", code = 200, response = {objectName}Model.class)
+    })
+    public String selectById(IdForm form) {
+        return returnSuccessInfo({objectNameSmall}ManagerRemote.selectById(form));
+    }
+
+    @AuthorityAnnotation(AuthorityAnnotationEnums.)
+    @PostMapping(value = "/insert{objectName}")
+    @ApiOperation(value = "新增{desc}", tags = ApiSwaggerTags.{objectNameBig}_TAG)
+    @ApiResponses({
+            @ApiResponse(message = "{desc}新增传参数据", code = 200, response = {objectName}InsertForm.class)
+    })
+    public String insert{objectName}(@RequestBody {objectName}InsertForm form) {
+        return returnSuccessInfo({objectNameSmall}ManagerRemote.insert{objectName}(form));
+    }
+
+    @AuthorityAnnotation(AuthorityAnnotationEnums.)
+    @PostMapping(value = "/edit{objectName}")
+    @ApiOperation(value = "编辑{desc}", tags = ApiSwaggerTags.{objectNameBig}_TAG)
+    @ApiResponses({
+            @ApiResponse(message = "{desc}编辑传参数据", code = 200, response = {objectName}EditForm.class)
+    })
+    public String edit{objectName}(@RequestBody {objectName}EditForm form) {
+        return returnSuccessInfo({objectNameSmall}ManagerRemote.edit{objectName}(form));
+    }
+
+    @AuthorityAnnotation(AuthorityAnnotationEnums.)
+    @GetMapping(value = "/query{objectName}Page")
+    @ApiOperation(value = "查询{desc}分页信息", tags = ApiSwaggerTags.{objectNameBig}_TAG)
+    @ApiResponses({
+            @ApiResponse(message = "{desc}分页记录", code = 200, response = {objectName}Model.class)
+    })
+    public String query{objectName}Page({objectName}QueryForm form) {
+        return returnSuccessInfo({objectNameSmall}ManagerRemote.query{objectName}Page(form));
+    }
+
+    @AuthorityAnnotation(AuthorityAnnotationEnums.)
+    @PostMapping(value = "/deleteById")
+    @ApiOperation(value = "删除{desc}", tags = ApiSwaggerTags.{objectNameBig}_TAG)
+    @ApiResponses({
+            @ApiResponse(message = "{desc}删除传参数据", code = 200, response = IdForm.class)
+    })
+    public String deleteById(@RequestBody IdForm form) {
+        return returnSuccessInfo({objectNameSmall}ManagerRemote.deleteById(form));
+    }
+}

@@ -1,0 +1,19 @@
+package {rootPackage}.config;
+
+/**
+ * 权限注解，所有权限在此处定义
+ */
+public enum AuthorityAnnotationEnums {
+    ADMIN("超级权限"),
+    ;
+    private String desc;
+
+    AuthorityAnnotationEnums(String desc) {
+        this.desc = desc;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+}

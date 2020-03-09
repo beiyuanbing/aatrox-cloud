@@ -1,0 +1,16 @@
+server:
+  port: 61100
+
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://gitee.com/poetry-code/coding.git
+          skipSslValidation: true
+          #查找config的所有文件,如果config下面没有多级的目录就只用写config
+          search-paths: config/**
+          username:
+          password:

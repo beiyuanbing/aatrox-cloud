@@ -1,0 +1,162 @@
+<!DOCTYPE>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Quartz Server</title>
+    <link href="/static/favicon.ico" type="image/x-icon" rel="shortcut icon">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/cronGen.css}">
+    <link rel="stylesheet" th:href="@{/css/toastr.min.css}">
+    <style type="text/css">
+        .btnRun, .btnPause, .btnResume, .btnEdit {
+            margin-right: 8px;
+        }
+
+        .input-group {
+            margin-bottom: 5px;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 30px;
+            margin-top: 15px;
+        }
+
+        .btnCreate {
+            text-align: right;
+            margin: 5px 15px;
+        }
+
+        .head {
+            border: solid;
+            border-color: #8080805c;
+            border-width: 1px;
+        }
+    </style>
+    <script type="application/javascript" th:src="@{/js/jquery.min.js}"></script>
+    <script type="application/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+    <script type="application/javascript" th:src="@{/js/bootstrap-select.min.js}"></script>
+    <script type="application/javascript" th:src="@{/js/cronGen.min.js}"></script>
+    <script type="application/javascript" th:src="@{/js/toastr.min.js}"></script>
+    <script type="application/javascript" th:src="@{/js/cronGen.min.js}"></script>
+    <script type="application/javascript" th:src="@{/js/index.js?v=11}"></script>
+
+</head>
+<body>
+
+<div class="container-fluid" style="padding-top: 15px;">
+
+    <div class="head">
+        <div class="title">Quartz Server</div>
+        <hr class="line">
+        <div class="btnCreate">
+            <button type="button" class="btn btn-primary" id="createBtn" data-toggle="modal">创建</button>
+        </div>
+    </div>
+
+    <table class="table table-bordered">
+        <thead>
+        <tr class="active">
+            <th>任务id</th>
+            <th>任务名</th>
+            <th>任务组</th>
+            <th>任务描述</th>
+            <th>任务状态</th>
+            <th>cron表达式</th>
+            <th>任务参数</th>
+            <th style="text-align: center;">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item,itemStat:${jobs}">
+            <td th:text="${item.quartzId}"></td>
+            <td th:text="${item.jobName}"></td>
+            <td th:text="${item.jobGroup}"></td>
+            <td th:text="${item.description}"></td>
+            <td th:text="${item.statusStr}"></td>
+            <td th:text="${item.cronExpression}"></td>
+            <td th:text="${item.invokeParam}"></td>
+            <td style="text-align: center;">
+                <div class="btn-group text-center" role="group"
+                     th:data-id="${item.quartzId}" th:attr="data-row=${item}">
+                    <button type="button" class="btn btn-default btnRun">执行</button>
+                    <button type="button" class="btn btn-default btnPause">暂停</button>
+                    <button type="button" class="btn btn-default btnResume">恢复</button>
+                    <button type="button" class="btn btn-default btnEdit">编辑</button>
+                    <button type="button" class="btn btn-warning btnDelete">删除</button>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="modal fade" id="quartzModal" tabindex="-1" role="dialog" aria-labelledby="quartzModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="quartzModalLabel">cron create</h4>
+            </div>
+
+            <div class="modal-body">
+                <form id="mainForm" method="post" action="/api/saveOrUpdate?t=" enctype="multipart/form-data">
+                    <div>
+                        <input type="hidden" class="form-control" id="quartzId" name="quartzId"/>
+                        <div class="input-group">
+                            <span class="input-group-addon">任务名</span>
+                            <input type="text" alias="no-edit" name="jobName" class="form-control"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon">任务组</span>
+                            <input type="text" alias="no-edit" name="jobGroup" class="form-control"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon">任务状态</span>
+                            <select id="edit_status" name="status" class="form-control" data-size="10">
+                                <option value="NORMAL" selected="selected">正常</option>
+                                <option value="PAUSED">停止</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon">任务描述</span>
+                            <input type="text" alias="no-edit" name="description" class="form-control"/>
+                        </div>
+                        <!--  <div class="input-group">
+                              <span class="input-group-addon">job type</span>
+                              <select id="edit_type" name="jobType" class="form-control" data-size="10">
+                                  <option value="java" selected="selected">java</option>
+                                  <option value="dynamic">dynamic-class</option>
+                                  <option value="shell">shell</option>
+                              </select>
+                          </div>-->
+                        <div class="input-group">
+                            <span class="input-group-addon">任务参数</span>
+                            <input type="text" alias="no-edit" name="invokeParam" class="form-control"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon">备注</span>
+                            <input type="text" name="remark" class="form-control"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon">触发器描述</span>
+                            <input type="text" name="triggerDesc" class="form-control"/>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon">cron表达式</span>
+                            <input type="text" alias="no-edit" name="cronExpression" class="form-control"
+                                   id="cronExpression"/>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            <button type="button" class="btn btn-info" id="resetBtn">重置</button>
+                            <button type="button" class="btn btn-primary" id="save">保存</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

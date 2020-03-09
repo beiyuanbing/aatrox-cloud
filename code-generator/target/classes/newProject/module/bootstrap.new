@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: {serviceName}
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: config-server
+      name: {serviceName}
+      label: master
+  profiles:
+    active: dev
+
+server:
+  port: 61000
+
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 10
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+  client:
+      serviceUrl:
+        defaultZone: http://cloud.eureka1.com:51101/eureka/,http://cloud.eureka2.com:51102/eureka/
+
+logging:
+  level:
+    com.netflix.discovery: 'OFF'
+    org.springframework.cloud: 'INFO'
+
+---
+spring:
+  profiles: dev
+
+  cloud:
+    config:
+      profile: dev
+---
+spring:
+  profiles: pro
+
+  cloud:
+    config:
+      profile: pro

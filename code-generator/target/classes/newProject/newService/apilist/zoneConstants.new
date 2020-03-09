@@ -1,0 +1,5 @@
+package {rootPackage}.restful;
+
+public class ZoneConstants {
+    public final static String FEIGN_URL = "{serviceDir}";
+}

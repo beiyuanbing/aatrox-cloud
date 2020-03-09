@@ -1,0 +1,53 @@
+package {rootPackage}.api;
+
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import {rootPackage}.apilist.form.{objectName}QueryForm;
+import {rootPackage}.apilist.form.{objectName}InsertForm;
+import {rootPackage}.apilist.form.{objectName}EditForm;
+import {rootPackage}.apilist.model.{objectName}Model;
+import {rootPackage}.service.{objectName}Service;
+import com.aatrox.apilist.form.RequestResult;
+import com.aatrox.apilist.form.RestfulBaseController;
+import com.aatrox.apilist.validate.IdForm;
+import com.aatrox.apilist.model.Pagination;
+
+import javax.annotation.Resource;
+
+/**
+ * {desc}微服务层Api
+ * Created by {author} on {date}
+ */
+@RestController
+@RequestMapping(value = "/{objectNameSmall}")
+public class {objectName}Api extends RestfulBaseController {
+    @Resource
+    private {objectName}Service {objectNameSmall}Service;
+
+    @PostMapping("/selectById")
+    public RequestResult<{objectName}Model> selectById(@RequestBody IdForm form){
+        return new RequestResult({objectNameSmall}Service.selectById(form));
+    }
+
+    @PostMapping("/insert{objectName}")
+    public RequestResult<{objectName}InsertForm> insert{objectName}(@RequestBody {objectName}InsertForm form){
+        return new RequestResult({objectNameSmall}Service.insert{objectName}(form));
+    }
+
+    @PostMapping("/edit{objectName}")
+    public RequestResult<{objectName}EditForm> edit{objectName}(@RequestBody {objectName}EditForm form){
+        return new RequestResult({objectNameSmall}Service.edit{objectName}(form));
+    }
+
+    @PostMapping("/query{objectName}Page")
+    public RequestResult<Pagination<{objectName}Model>> query{objectName}Page(@RequestBody {objectName}QueryForm form){
+        return new RequestResult({objectNameSmall}Service.query{objectName}Page(form));
+    }
+
+    @PostMapping("/deleteById")
+    public RequestResult<IdForm> deleteById(@RequestBody IdForm form){
+        return new RequestResult({objectNameSmall}Service.deleteById(form));
+    }
+}

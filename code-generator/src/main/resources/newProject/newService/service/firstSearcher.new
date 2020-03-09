@@ -1,0 +1,8 @@
+package {rootPackage}.solr;
+
+/**
+ * @see aatrox.infra.feature.solr.demo.DemoSearcher
+ */
+public class FirstSearcher{
+
+}

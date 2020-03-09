@@ -1,0 +1,33 @@
+package {webRootPackage}.apilist.restful;
+
+import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.web.bind.annotation.PostMapping;
+import {rootPackage}.apilist.form.{objectName}QueryForm;
+import {rootPackage}.apilist.form.{objectName}InsertForm;
+import {rootPackage}.apilist.form.{objectName}EditForm;
+import {rootPackage}.apilist.model.{objectName}Model;
+import com.aatrox.apilist.form.RequestResult;
+import com.aatrox.apilist.validate.IdForm;
+import com.aatrox.apilist.model.Pagination;
+
+/**
+ * {desc}微服务feign
+ * Created by {author} on {date}
+ */
+@FeignClient(ZoneConstants.FEIGN_URL)
+public interface {objectName}Feign {
+    @PostMapping("/{objectNameSmall}/selectById")
+    RequestResult<{objectName}Model> selectById(IdForm form);
+
+    @PostMapping("/{objectNameSmall}/insert{objectName}")
+    RequestResult<{objectName}InsertForm> insert{objectName}({objectName}InsertForm form);
+
+    @PostMapping("/{objectNameSmall}/edit{objectName}")
+    RequestResult<{objectName}EditForm> edit{objectName}({objectName}EditForm form);
+
+    @PostMapping("/{objectNameSmall}/query{objectName}Page")
+    RequestResult<Pagination<{objectName}Model>> query{objectName}Page({objectName}QueryForm form);
+
+    @PostMapping("/{objectNameSmall}/deleteById")
+    RequestResult<IdForm> deleteById(IdForm form);
+}

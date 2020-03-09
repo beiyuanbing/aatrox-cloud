@@ -1,0 +1,15 @@
+package {rootPackage}.restful;
+
+import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import aatrox.infra.apilist.RequestResult;
+import aatrox.infra.apilist.validate.PageForm;
+import aatrox.infra.common.model.Pagination;
+import {rootPackage}.model.FirstModel;
+
+@FeignClient(value = ZoneConstants.FEIGN_URL)
+public interface FirstFeign {
+    @RequestMapping(value = "/quickstart/queryName",method = RequestMethod.POST)
+    RequestResult<Pagination<FirstModel>> queryName(PageForm form);
+}

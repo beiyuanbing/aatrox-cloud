@@ -1,0 +1,19 @@
+package {rootPackage}.mq;
+
+import org.springframework.jms.annotation.EnableJms;
+import org.springframework.jms.annotation.JmsListener;
+import org.springframework.stereotype.Service;
+import aatrox.infra.feature.activemq.ActiveMqAbstractListener;
+
+import javax.jms.Message;
+
+@Service("demoListenerQueue")
+@EnableJms
+public class FirstListenerQueue extends ActiveMqAbstractListener {
+    @Override
+    @JmsListener(containerFactory="queueContainerFactory",destination = "tttt.DEMO_QUEUE")
+    protected void doTask(Message message) {
+        String msg = decodeMessage(message);
+        System.out.println(msg);
+    }
+}

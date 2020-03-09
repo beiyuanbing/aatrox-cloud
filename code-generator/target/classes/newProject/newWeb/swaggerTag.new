@@ -1,0 +1,5 @@
+package {rootPackage}.config;
+
+public class ApiSwaggerTags {
+    //public static final String DEMO_TAG = "DEMO模块-first管理";
+}

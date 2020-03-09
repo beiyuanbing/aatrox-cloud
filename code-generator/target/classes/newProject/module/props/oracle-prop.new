@@ -1,0 +1,7 @@
+
+#oracle start
+basic.oracle.url=
+basic.oracle.username=
+basic.oracle.password=
+basic.mybatis.aliasesPackage={package}
+#oracle end

@@ -1,0 +1,50 @@
+package {rootPackage}.service;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Service;
+import {rootPackage}.apilist.form.{objectName}QueryForm;
+import {rootPackage}.apilist.form.{objectName}InsertForm;
+import {rootPackage}.apilist.form.{objectName}EditForm;
+import {rootPackage}.apilist.model.{objectName}Model;
+import {rootPackage}.dao.automapper.{objectName}Dao;
+import com.aatrox.apilist.validate.IdForm;
+import com.aatrox.apilist.model.Pagination;
+
+import javax.annotation.Resource;
+import java.util.UUID;
+
+/**
+ * {desc}服务层Service
+ * Created by {author} on {date}
+ */
+@Service
+public class {objectName}Service {
+    @Resource
+    private {objectName}Dao {objectNameSmall}Dao;
+
+    public {objectName}Model selectById(IdForm form) {
+        return {objectNameSmall}Dao.selectById(form.getId());
+    }
+
+    public {objectName}InsertForm insert{objectName}({objectName}InsertForm form) {
+        form.setId(UUID.randomUUID().toString());
+        {objectNameSmall}Dao.insert{objectName}(form);
+        return form;
+    }
+
+    public {objectName}EditForm edit{objectName}({objectName}EditForm form) {
+        {objectNameSmall}Dao.update{objectName}(form);
+        return form;
+    }
+
+    public Pagination<{objectName}Model> query{objectName}Page({objectName}QueryForm form) {
+        Pagination<{objectName}Model> page = form.makePagination();
+        {objectNameSmall}Dao.query{objectName}Page(page,form);
+        return page;
+    }
+
+    public IdForm deleteById(IdForm form) {
+        {objectNameSmall}Dao.deleteById(form.getId());
+        return form;
+    }
+}

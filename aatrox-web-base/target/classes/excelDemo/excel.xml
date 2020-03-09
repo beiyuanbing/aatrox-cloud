@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<excels>
+    <excel id="planExportByDate" beanName="" methoName=""
+           fileName="导出" sqlMapsId="com.aatrox.dao.plan.PlanDao.getExport">
+        <column key="FRegisterName" width="80">登记名</column>
+    </excel>
+</excels>

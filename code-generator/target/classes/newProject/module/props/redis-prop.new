@@ -1,0 +1,8 @@
+
+#redis start
+basic.redis.appName={serviceName}
+basic.redis.save.url=192.168.0.43
+basic.redis.save.port=6381
+basic.redis.query.url=192.168.0.43
+basic.redis.query.port=6381
+#redis end

@@ -1,0 +1,7 @@
+
+#h2sql start
+basic.h2sql.url=jdbc:h2:~/h2sql/{serviceName};AUTO_SERVER=TRUE
+basic.h2sql.username=sa
+basic.h2sql.password=
+basic.mybatis.aliasesPackage={package}
+#h2sql end

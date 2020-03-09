@@ -1,0 +1,8 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://clound.byb.eureka.com:61000/eureka/
+  instance:
+    leaseRenewalIntervalInSeconds: 10
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}

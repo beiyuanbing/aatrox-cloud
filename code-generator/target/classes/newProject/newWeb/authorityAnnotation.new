@@ -1,0 +1,13 @@
+package {rootPackage}.config;
+
+import java.lang.annotation.*;
+
+/**
+ * 权限设定注解
+ */
+@Target({ElementType.METHOD, ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface AuthorityAnnotation {
+    AuthorityAnnotationEnums[] value();
+}

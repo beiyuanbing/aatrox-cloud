@@ -1,0 +1,14 @@
+package {rootPackage}.service;
+
+import org.springframework.stereotype.Service;
+import aatrox.infra.apilist.validate.PageForm;
+import aatrox.infra.common.model.Pagination;
+import {rootPackage}.apilist.model.FirstModel;
+
+@Service
+public class FirstService {
+    public Pagination<FirstModel> queryName(PageForm form) {
+        Pagination<FirstModel> page = new Pagination(form.getPageSize(),form.getCurrentPage());
+        return page;
+    }
+}

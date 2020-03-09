@@ -1,0 +1,6 @@
+
+#activemq start
+basic.activemq.url=tcp://192.168.0.56:61616
+basic.activemq.sessionSize=20
+basic.activemq.topicSessionSize=10
+#activemq end

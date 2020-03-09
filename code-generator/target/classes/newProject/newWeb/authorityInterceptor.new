@@ -1,0 +1,104 @@
+package {rootPackage}.interceptor;
+
+import org.apache.http.HttpStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.springframework.web.method.HandlerMethod;
+import aatrox.infra.common.cache.RedisCache;
+import aatrox.infra.web.bean.JsonCommonCodeEnum;
+import aatrox.infra.web.interceptor.ZBaseInterceptorAdapter;
+import {rootPackage}.config.AuthorityAnnotation;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class AuthorityInterceptor extends ZBaseInterceptorAdapter {
+    private Logger visitLog = LoggerFactory.getLogger(this.getClass());
+    private RedisCache redisCache;
+
+    @Override
+    public boolean preHandle(HttpServletRequest request,
+                             HttpServletResponse response, Object handler) throws Exception {
+        try {
+            //仅校验方法级别的Handler
+            if (!(handler instanceof HandlerMethod)) {
+                return super.preHandle(request, response, handler);
+            }
+            AuthorityAnnotation auth = getAnnotation((HandlerMethod) handler);
+
+            ResponseBody body = new ResponseBody();
+            body.setLoginUrl(getLoginUrl(request));
+            switch (checkHasAuth(request, auth)) {
+                case SUCCESS:
+                    return super.preHandle(request, response, handler);
+                case NO_AUTH:
+                    body.setStatus(HttpStatus.SC_FORBIDDEN);
+                    body.setCode(JsonCommonCodeEnum.E0007);
+                    printJsonMsg(response, body);
+                    return false;
+                case INVALID:
+                    body.setCode(JsonCommonCodeEnum.E0008);
+                    printJsonMsg(response, body);
+                    return false;
+                default:
+                    body.setCode(JsonCommonCodeEnum.E0008);
+                    printJsonMsg(response, body);
+                    return false;
+            }
+        } catch (Exception e) {
+            visitLog.error(e.getMessage(), e);
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    private String getLoginUrl(HttpServletRequest request) {
+        return "/login.html";
+    }
+
+    /**
+     * 设置注解值
+     **/
+    private AuthorityAnnotation getAnnotation(HandlerMethod handler) {
+        HandlerMethod handlerMethod = handler;
+        AuthorityAnnotation annotation =
+                handlerMethod.getClass().getAnnotation(AuthorityAnnotation.class);
+        AuthorityAnnotation methodAnnotation =
+                handlerMethod.getMethod().getAnnotation(AuthorityAnnotation.class);
+        return methodAnnotation == null ? annotation : methodAnnotation;
+    }
+
+    /**
+     * 验证当前用户是否有权限
+     *
+     * @return
+     */
+    private AuthCheckResult checkHasAuth(HttpServletRequest request, AuthorityAnnotation auth) {
+        //登录的人员数据已经放入session
+        Object object = request.getSession().getAttribute("");
+        //下面做逻辑判断，demo演示都走true
+        if (true) {
+            initSessionResource(request);
+            //if(auth==null){
+            return AuthCheckResult.SUCCESS;
+            //}
+            //return AuthCheckResult.NO_AUTH;
+        } else {
+            return AuthCheckResult.NO_LOGIN;
+        }
+    }
+
+    private void initSessionResource(HttpServletRequest request) {
+        if (redisCache == null) {
+            ApplicationContext ctx = WebApplicationContextUtils.getWebApplicationContext(request.getServletContext());
+            redisCache = ctx.getBean(RedisCache.class);
+        }
+    }
+
+    public enum AuthCheckResult {
+        SUCCESS,
+        NO_LOGIN,
+        NO_AUTH,
+        INVALID,
+    }
+}

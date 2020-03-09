@@ -1,0 +1,24 @@
+package {rootPackage}.controller;
+
+import org.dozer.DozerBeanMapper;
+import org.dozer.Mapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import aatrox.infra.web.controller.BaseController;
+
+public class WebBaseController extends BaseController {
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    protected Mapper mapper = new DozerBeanMapper();
+
+    //public LoginPersonModel getCurrentPerson() {
+    //    return (LoginPersonModel) getRequest().getSession().getAttribute(MgrCommonConstants.CURRENT_LOGIN_PERSON);
+    //}
+    //
+    //protected void initDataAuth(PageForm form, String dataType){
+    //    LoginPersonModel person = getCurrentPerson();
+    //    form.setDatas(person.getCurrentDataOrgLongNumber(dataType));
+    //    form.setOrgManager(person.isManager());
+    //    form.setPersonOrgLongNumber(person.getOrgLongNumber());
+    //    form.setPersonId(person.getId());
+    //}
+}

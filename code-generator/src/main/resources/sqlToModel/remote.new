@@ -1,0 +1,51 @@
+package {rootPackage}.remote;
+
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import {rootPackage}.apilist.form.{objectName}QueryForm;
+import {rootPackage}.apilist.form.{objectName}InsertForm;
+import {rootPackage}.apilist.form.{objectName}EditForm;
+import {rootPackage}.apilist.model.{objectName}Model;
+import {rootPackage}.apilist.restful.{objectName}Feign;
+import com.aatrox.apilist.validate.IdForm;
+import com.aatrox.apilist.model.Pagination;
+
+/**
+ * {desc}门面层remote
+ * Created by {author} on {date}
+ * //自行决定降级
+ */
+@Service
+public class {objectName}ManagerRemote {
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    @Autowired
+    private {objectName}Feign {objectNameSmall}Feign;
+
+    @HystrixCommand
+    public {objectName}Model selectById(IdForm form) {
+        return {objectNameSmall}Feign.selectById(form).pickBody();
+    }
+
+    @HystrixCommand
+    public {objectName}InsertForm insert{objectName}({objectName}InsertForm form) {
+        return {objectNameSmall}Feign.insert{objectName}(form).pickBody();
+    }
+
+    @HystrixCommand
+    public {objectName}EditForm edit{objectName}({objectName}EditForm form) {
+        return {objectNameSmall}Feign.edit{objectName}(form).pickBody();
+    }
+
+    @HystrixCommand
+    public Pagination<{objectName}Model> query{objectName}Page({objectName}QueryForm form) {
+        return {objectNameSmall}Feign.query{objectName}Page(form).pickBody();
+    }
+
+    @HystrixCommand
+    public IdForm deleteById(IdForm form) {
+        return {objectNameSmall}Feign.deleteById(form).pickBody();
+    }
+}

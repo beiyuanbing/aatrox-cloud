@@ -1,0 +1,3 @@
+com/aatrox/logservice/constants/ZoneStants.class
+com/aatrox/logservice/entity/LogRecord.class
+com/aatrox/logservice/feign/LogFeign.class

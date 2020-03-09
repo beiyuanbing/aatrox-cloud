@@ -1,0 +1,15 @@
+package {rootPackage}.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import aatrox.infra.service.datasource.mybatis.mapper.scanner.MapperScannerConfigurer;
+
+@Configuration
+public class AutoMapConfig {
+    @Bean(name="autoMapperScanner")
+    public MapperScannerConfigurer autoMapperScanner(){
+        MapperScannerConfigurer orgMapperScanner = new MapperScannerConfigurer();
+        orgMapperScanner.setBasePackage("{rootPackage}.dao.automapper");
+        return orgMapperScanner;
+    }
+}

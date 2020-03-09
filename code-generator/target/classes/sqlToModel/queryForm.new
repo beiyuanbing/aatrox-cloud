@@ -1,0 +1,6 @@
+package {rootPackage}.apilist.form;
+
+import com.aatrox.apilist.validate.PageForm;
+
+public class {objectName}QueryForm extends PageForm {
+}

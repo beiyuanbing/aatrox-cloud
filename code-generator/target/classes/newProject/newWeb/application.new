@@ -1,0 +1,35 @@
+server:
+  context-path: /{serviceName}
+  tomcat:
+    uri-encoding: UTF-8
+
+spring:
+  http:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
+
+ribbon:
+  #请求处理的超时时间
+  ReadTimeout: 10000
+  #请求连接的超时时间
+  ConnectTimeout: 10000
+
+feign:
+  hystrix:
+    enabled: false
+#  client:
+#    config:
+#      default:
+#        loggerLevel: FULL
+#具体到feign包
+#logging:
+#  level: debug
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000

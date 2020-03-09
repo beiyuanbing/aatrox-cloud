@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<configuration>
+	<!-- 定义日志根路径 -->
+	<property name="log.base" value="/Users/apple/Documents/code/coding/log/services/statistics/service-statistics-service" />
+	<statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener" />
+	<!-- 控制台输出 -->
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>#s_logger#%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50}-%line %msg #e_logger#%n</pattern>
+		</encoder>
+	</appender>
+	<appender name="normalAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!--日志文件输出的文件名-->
+			<FileNamePattern>${log.base}/normal/normal.%d{yyyy-MM-dd}.log</FileNamePattern>
+			<MaxHistory>30</MaxHistory>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>#s_logger#%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50}-%line %msg #e_logger#%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>ERROR</level>
+			<onMatch>DENY</onMatch>
+			<onMismatch>ACCEPT</onMismatch>
+		</filter>
+	</appender>
+	<appender name="sqlAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${log.base}/sql/sql.%d{yyyy-MM-dd}.log</FileNamePattern>
+			<MaxHistory>30</MaxHistory>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>#s_logger#%d{yyyy-MM-dd HH:mm:ss.SSS}%n%msg #e_logger#%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="errorAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${log.base}/error/error.%d{yyyy-MM-dd}.log</FileNamePattern>
+			<MaxHistory>30</MaxHistory>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>#s_logger#%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50}-%line %msg #e_logger#%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>ERROR</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+	</appender>
+
+	<logger name="sqlLogger" level="DEBUG" additivity="false">
+		<appender-ref ref="sqlAppender"/>
+	</logger>
+
+	<root level="INFO">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="normalAppender" />
+		<appender-ref ref="errorAppender"/>
+		<appender-ref ref="bootstrapAppender"/>
+	</root>
+</configuration>

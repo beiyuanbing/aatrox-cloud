@@ -1,0 +1,5 @@
+deploy.env=dev
+{redis-prop}{activemq-prop}{rabbitmq-prop}{dubbo-prop}
+switch.crossOriginInterceptor.isOpen=true
+
+logger.app={serviceName}

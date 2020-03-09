@@ -1,0 +1,23 @@
+package {rootPackage}.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
+import org.springframework.jms.connection.CachingConnectionFactory;
+import aatrox.infra.feature.activemq.ActiveMqConfiguration;
+
+import javax.jms.Session;
+
+@Configuration
+@Import(ActiveMqConfiguration.class)
+public class ActiveConfig {
+    @Bean("queueContainerFactory")
+    public DefaultJmsListenerContainerFactory queueContainerFactory(
+            CachingConnectionFactory connectionFactory){
+        DefaultJmsListenerContainerFactory containerFactory = new DefaultJmsListenerContainerFactory();
+        containerFactory.setConnectionFactory(connectionFactory);
+        containerFactory.setSessionAcknowledgeMode(Session.CLIENT_ACKNOWLEDGE);
+        return containerFactory;
+    }
+}

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <name>statistics-apilist</name>
+    <groupId>com.aatrox</groupId>
+    <artifactId>statistics-apilist</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+
+    <parent>
+        <artifactId>coding</artifactId>
+        <groupId>com.aatrox</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <properties>
+        <java.version>11</java.version>
+        <spring-cloud.version>Greenwich.SR1</spring-cloud.version>
+        <mybatisplus.version>3.1.1</mybatisplus.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.aatrox</groupId>
+            <artifactId>common</artifactId>
+            <version>2.0-SNAPSHOT</version>
+        </dependency>
+        <!-- Feign依赖，声明式开发 -->
+        <!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-openfeign -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <version>2.1.3.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus</artifactId>
+            <version>${mybatisplus.version}</version>
+        </dependency>
+    </dependencies>
+</project>

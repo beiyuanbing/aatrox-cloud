@@ -1,0 +1,19 @@
+package {rootPackage}.config;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import aatrox.infra.feature.dubbo.DubboConfig;
+
+@Configuration
+@Import({DubboConfig.class})
+public class DubboConfiguration {
+    //@Bean(name="firstReference")
+    //public ReferenceBean roomSituationQueryFacade(){
+    //    return ConfigFactory.makeQuickReferenceBean("firstReference",xxxx.class);
+    //}
+    //
+    //@Bean(name="firstService")
+    //public ServiceBean roomSituationQueryFacade(){
+    //    return ConfigFactory.makeQuickServiceBean(xxxx.class,Object);
+    //}
+}

@@ -1,0 +1,21 @@
+#开启redis
+basic:
+  redis:
+    'on': true
+  #开启MQ
+  mq:
+    'on': false
+  #对于rabbitMQ的支持
+  rabbitmq:
+    'on': false
+#    host: 127.0.0.1
+#    port: 5672
+#    username: guest
+#    password: guest
+aatrox:
+  wechat:
+    wxmp:
+      config:
+        training:
+          appid: wx200376412b2eca59
+          secret: 9ad155193a98341d414b3bfa2c5665d5

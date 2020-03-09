@@ -1,0 +1,23 @@
+package {rootPackage}.dao.automapper;
+
+import {rootPackage}.apilist.form.{objectName}QueryForm;
+import {rootPackage}.apilist.form.{objectName}InsertForm;
+import {rootPackage}.apilist.form.{objectName}EditForm;
+import {rootPackage}.apilist.model.{objectName}Model;
+import com.aatrox.apilist.model.Pagination;
+
+/**
+ * {desc}Dao层
+ * Created by {author} on {date}
+ */
+public interface {objectName}Dao{
+	{objectName}Model selectById(String id);
+
+	int insert{objectName}({objectName}InsertForm form);
+
+	int update{objectName}({objectName}EditForm form);
+
+	void deleteById(String id);
+
+	void query{objectName}Page(Pagination<{objectName}Model> page, {objectName}QueryForm form);
+}

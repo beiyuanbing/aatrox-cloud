@@ -1,0 +1,32 @@
+=======================================Controller===========================================
+    {authAnnotation}
+    @{httpMethod}(value = "/{methodName}")
+    @ApiOperation(value = "{apiDesc}", tags = {apiTag})
+    @ApiResponses({
+            @ApiResponse(message = "{apiReturnDesc}", code = 200, response = {returnObject}.class)
+    })
+    public String {methodName}({requestBody}{formName} form) {
+        return returnSuccessInfo({remoteName}.{methodName}(form));
+    }
+
+=======================================Remote===========================================
+    @HystrixCommand
+    public {returnObjectWithType} {methodName}({formName} form) {
+        return {feignName}.{methodName}(form).pickBody();
+    }
+
+=======================================Feign===========================================
+    @PostMapping("{apiUrlPath}/{methodName}")
+    RequestResult<{returnObjectWithType}> {methodName}({formName} form);
+
+=======================================api===========================================
+    @PostMapping("/{methodName}")
+    public RequestResult<{returnObjectWithType}> {methodName}(@RequestBody {formName} form){
+        return new RequestResult({serviceName}.{methodName}(form));
+    }
+
+=======================================service===========================================
+    public {returnObjectWithType} {methodName}({formName} form){
+        return {daoName}.{methodName}(form);
+    }
+

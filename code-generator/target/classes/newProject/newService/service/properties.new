@@ -1,0 +1,3 @@
+deploy.env=dev
+{redis-prop}{activemq-prop}{rabbitmq-prop}{dubbo-prop}{solr-prop}{mysql-prop}{h2sql-prop}{tidb-prop}{oracle-prop}
+logger.app={serviceName}

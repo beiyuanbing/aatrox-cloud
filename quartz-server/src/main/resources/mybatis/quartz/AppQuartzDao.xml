@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aatrox.quartzserver.dao.AppQuartzDao">
+    <resultMap id="AppQuartzModelResult" type="com.aatrox.quartzserver.model.AppQuartz">
+        <id property="quartzId" column="quartzId"/>
+        <result property="jobName" column="jobName"/>
+        <result property="jobGroup" column="jobGroup"/>
+        <result property="description" column="description"/>
+        <result property="status" column="status"/>
+        <result property="startTime" column="startTime"/>
+        <result property="cronExpression" column="cronExpression"/>
+        <result property="triggerDesc" column="triggerDesc"/>
+        <result property="invokeParam" column="invokeParam"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+
+    <select id="selectById" parameterType="integer" resultMap="AppQuartzModelResult">
+		select *
+		from quartz.T_APP_QUARTZ
+		where quartzId=#{quartzId}
+	</select>
+
+    <insert id="insertAppQuartz" parameterType="com.aatrox.quartzserver.model.AppQuartz" keyColumn="quartzId"
+            keyProperty="quartzId" useGeneratedKeys="true">
+		insert into quartz.T_APP_QUARTZ(quartzId,jobName,jobGroup,description,status,startTime,cronExpression,triggerDesc,invokeParam,remark)
+			 values(#{quartzId},#{jobName},#{jobGroup},#{description},#{status},#{startTime},#{cronExpression},#{triggerDesc},#{invokeParam},#{remark})
+	</insert>
+
+    <update id="updateAppQuartz" parameterType="com.aatrox.quartzserver.model.AppQuartz">
+        update quartz.T_APP_QUARTZ
+        <set>
+            <if test="jobName!=null">jobName=#{jobName},</if>
+            <if test="jobGroup!=null">jobGroup=#{jobGroup},</if>
+            <if test="description!=null">description=#{description},</if>
+            <if test="status!=null">status=#{status},</if>
+            <if test="startTime!=null">startTime=#{startTime},</if>
+            <if test="cronExpression!=null">cronExpression=#{cronExpression},</if>
+            <if test="triggerDesc!=null">triggerDesc=#{triggerDesc},</if>
+            <if test="invokeParam!=null">invokeParam=#{invokeParam},</if>
+            <if test="remark!=null">remark=#{remark},</if>
+        </set>
+        where quartzId=#{quartzId}
+    </update>
+
+    <delete id="deleteById" parameterType="integer">
+		delete from quartz.T_APP_QUARTZ
+		where quartzId=#{quartzId}
+	</delete>
+
+    <select id="selectAppQuartzs" parameterType="com.aatrox.quartzserver.model.AppQuartz"
+            resultMap="AppQuartzModelResult">
+        select
+        *from quartz.T_APP_QUARTZ quartz
+        <where>
+            <if test="jobName!=null">and quartz.jobName=#{jobName},</if>
+            <if test="jobGroup!=null">and quartz.jobGroup=#{jobGroup},</if>
+            <if test="description!=null">and quartz.description=#{description},</if>
+            <if test="status!=null">and quartz.status=#{status},</if>
+            <if test="startTime!=null">and quartz.startTime=#{startTime},</if>
+            <if test="cronExpression!=null">and quartz.cronExpression=#{cronExpression},</if>
+            <if test="triggerDesc!=null">and quartz.triggerDesc=#{triggerDesc},</if>
+            <if test="invokeParam!=null">and quartz.invokeParam=#{invokeParam},</if>
+            <if test="remark!=null">and quartz.remark=#{remark},</if>
+        </where>
+    </select>
+</mapper>

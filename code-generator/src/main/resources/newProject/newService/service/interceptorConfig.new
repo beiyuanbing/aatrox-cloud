@@ -1,0 +1,25 @@
+package {rootPackage}.config;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import aatrox.infra.web.interceptor.CrossOriginInterceptor;
+import {rootPackage}.interceptor.ContextInterceptor;
+import javax.annotation.Resource;
+
+/**
+ * xml
+ *  <mvc:interceptors></mvc:interceptors>
+ *  <mvc:view-controller
+ */
+@Configuration
+public class InterceptorConfig extends WebMvcConfigurerAdapter {
+    @Resource
+    private Environment env;
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new ContextInterceptor()).addPathPatterns("/**");
+    }
+}

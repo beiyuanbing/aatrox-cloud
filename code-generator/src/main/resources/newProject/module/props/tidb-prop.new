@@ -1,0 +1,7 @@
+
+#tidb start
+basic.tidb.url=
+basic.tidb.username=
+basic.tidb.password=
+basic.mybatis.aliasesPackage={package}
+#tidb end

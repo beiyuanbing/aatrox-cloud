@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aatrox.logservice.dao.LogRecordDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.aatrox.logservice.entity.LogRecord">
+        <id column="fid" property="id"/>
+        <result column="fcontent" property="content"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        fid, fcontent
+    </sql>
+    <select id="selectList" resultMap="BaseResultMap">
+        select *from t_log_record
+    </select>
+
+
+</mapper>

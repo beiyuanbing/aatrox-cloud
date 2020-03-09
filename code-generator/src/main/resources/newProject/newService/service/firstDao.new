@@ -1,0 +1,15 @@
+package {rootPackage}.dao.automapper;
+
+import aatrox.infra.common.model.Pagination;
+
+/**
+ * dao层仅需要接口即可
+ */
+public interface FirstDao {
+    /**
+     * 查询名字，page对象始终放在第一参数位置
+     * @param page
+     * @return
+     */
+    void queryName(Pagination page);
+}

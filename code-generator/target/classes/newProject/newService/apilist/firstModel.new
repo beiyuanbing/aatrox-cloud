@@ -1,0 +1,17 @@
+package {rootPackage}.model;
+
+import io.swagger.annotations.ApiModelProperty;
+import aatrox.infra.common.model.Entity;
+
+public class FirstModel extends Entity<String> {
+    @ApiModelProperty("显示的名字")
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}

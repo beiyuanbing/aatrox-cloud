@@ -1,0 +1,5 @@
+
+#solr start
+solr.zkurl=
+solr.collectionName=
+#solr end
