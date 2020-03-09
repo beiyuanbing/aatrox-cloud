@@ -8,7 +8,7 @@ spring:
     config:
       server:
         git:
-          uri: https://gitee.com/poetry-code/coding.git
+          uri: https://github.com/beiyuanbing/aatrox-cloud
           skipSslValidation: true
           #查找config的所有文件,如果config下面没有多级的目录就只用写config
           search-paths: config/**
