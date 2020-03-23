@@ -2,7 +2,7 @@
 
 <configuration>
 	<!-- 定义日志根路径 -->
-	<property name="log.base" value="/Users/apple/Documents/code/coding/log/services/statistics/service-statistics-service" />
+	<property name="log.base" value="/Users/apple/Documents/code/aatrox-cloud/log/services/statistics/service-statistics-service" />
 	<statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener" />
 	<!-- 控制台输出 -->
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">

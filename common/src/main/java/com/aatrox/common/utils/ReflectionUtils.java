@@ -1,10 +1,13 @@
 package com.aatrox.common.utils;
 
+import org.apache.commons.lang3.Validate;
 import org.springframework.cglib.beans.BeanGenerator;
 import org.springframework.cglib.beans.BeanMap;
 
+import java.lang.annotation.*;
 import java.lang.reflect.*;
 import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * @desc 反射的工具类
@@ -580,6 +583,55 @@ public class ReflectionUtils {
                     ", age=" + age +
                     '}';
         }
+    }
+    private static List<Field> recursionFields(Class<?> type) {
+        Validate.notNull(type, "Parameter 'type' is required");
+
+        Class<?> clazz = type;
+
+        List<Field> fieldList = new ArrayList<Field>();
+        while (clazz != Object.class) {
+            fieldList.addAll(Arrays.asList(clazz.getDeclaredFields()));
+            clazz = clazz.getSuperclass();
+        }
+
+        return fieldList;
+    }
+
+    @Target(ElementType.FIELD)
+    @Retention(RetentionPolicy.RUNTIME)
+    public @interface Ignore {
+
+    }
+    /**
+     * 获取指定类及其父类中某一注解标识的所有属性
+     *
+     * @param type
+     * @param specify 指定注解
+     * @return
+     */
+    public static Field[] getSpecified(Class<?> type, Class<? extends Annotation> specify) {
+        List<Field> fieldList = recursionFields(type);
+
+        if (specify != null) {
+            Iterator<Field> fieldIterator = fieldList.iterator();
+            while (fieldIterator.hasNext()) {
+                Field field = fieldIterator.next();
+                if(!field.isAnnotationPresent(specify)) {
+                    fieldIterator.remove();
+                }
+            }
+        }
+        return fieldList.toArray(Field[]::new);
+    }
+
+    public static  <T> T newInstance(Class<T> clazz) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        return clazz.getDeclaredConstructor().newInstance();
+    }
+
+
+    public static Field[] getSpecifiedAndSort(Class<?> type, Class<? extends Annotation> specify, Comparator<Field> comparator) {
+        return Stream.of(getSpecified(type, specify)).sorted(comparator).toArray(Field[]::new);
     }
 
     public static void main(String[] args) {
