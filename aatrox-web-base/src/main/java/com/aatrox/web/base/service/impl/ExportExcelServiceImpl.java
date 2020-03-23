@@ -42,9 +42,9 @@ public class ExportExcelServiceImpl implements ExportExcelService {
      * @return
      */
     @Override
-    public List getListByBeanId(String beanName,String methodName, Object params) {
+    public List getListByBeanId(String beanName,String methodName, Object params,Class claz) {
         Object bean = ApplicationContextRegister.getApplicationContext().getBean(beanName);
-        Method method = ReflectionUtils.findMethod(bean.getClass(), methodName, Map.class);
+        Method method = ReflectionUtils.findMethod(bean.getClass(), methodName,claz);
         List resultList =(List) ReflectionUtils.invokeMethod(method, bean, params);
         return resultList;
     }

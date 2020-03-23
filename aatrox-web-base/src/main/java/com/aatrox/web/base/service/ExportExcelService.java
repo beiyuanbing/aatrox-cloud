@@ -23,6 +23,6 @@ public interface ExportExcelService {
      * @param params
      * @return
      */
-    List getListByBeanId(String beanName,String methodName, Object params);
+    List getListByBeanId(String beanName,String methodName, Object params,Class claz);
 
 }

@@ -92,6 +92,7 @@ public class ExcelUtils {
             resultMap.put("fileName", element.attribute("fileName").getText());
             resultMap.put("beanName", element.attribute("beanName")!=null?element.attribute("beanName").getText():null);
             resultMap.put("methodName", element.attribute("methodName")!=null?element.attribute("methodName").getText():null);
+            resultMap.put("paramType", element.attribute("paramType")!=null?element.attribute("paramType").getText():null);
             resultMap.put("columns", getColumnByElement(element));
 
             excelMaps.put(element.attribute("id").getText(), resultMap);
@@ -117,6 +118,9 @@ public class ExcelUtils {
             cell.put("width", column.attribute("width").getText());
             if (column.attribute("dataType") != null) {
                 cell.put("dataType", column.attribute("dataType").getText());
+            }
+            if(column.attribute("dateFormat")!=null){
+                cell.put("dateFormat",column.attribute("dateFormat").getText());
             }
             if (column.attribute("enum") != null) {
                 cell.put("enum", column.attribute("enum").getText());

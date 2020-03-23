@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <excels>
-    <excel id="orderExport" beanName="orderRemote" methodName="selectByParam" fileName="订单导出" >
+    <excel id="orderExport" beanName="orderRemote" methodName="selectByParam" paramType="java.lang.Object" fileName="订单导出" >
         <column key="name" width="80">订单名</column>
-        <column key="createTime" dataType="date" width="80">订单创建时间</column>
+        <column key="createTime" dataType="date"  dateFormat=""  width="80">订单创建时间</column>
        <!-- <column key="FStatus" width="80" enumKey="key" enumDescription="desc"
                 enum="com.aatrox.enums.StatusEnum">审核状态
         </column>-->

@@ -1,6 +1,7 @@
 package com.aatrox.web.base.controller;
 
 import com.aatrox.common.utils.DateUtil;
+import com.aatrox.common.utils.ListUtil;
 import com.aatrox.common.utils.StringUtils;
 import com.aatrox.web.base.service.ExportExcelService;
 import com.aatrox.web.base.util.ExcelUtils;
@@ -49,8 +50,13 @@ public class ExcelController extends BaseController {
             fileName = (String) excelMap.get("fileName");
             //调用的方法名
             String methodName = (String) excelMap.get("methodName");
+            String paramType = (String) excelMap.get("paramType");
+            Class claz=null;
+            if(StringUtils.isNotEmpty(paramType)){
+                claz=Class.forName(paramType);
+            }
             //如果使用getListBySqlMapsId,进行查询mybatis的mapper.xml的数据库方法，因此将此方法改成通用就变成如此了
-            List contentList = this.exportExcelService.getListByBeanId(beanName,methodName, params);
+            List contentList = this.exportExcelService.getListByBeanId(beanName,methodName,params,claz);
             handleData(template, contentList);
 
         }
@@ -61,6 +67,12 @@ public class ExcelController extends BaseController {
     }
 
     public void handleData(List<Map<String, Object>> template, List contentList) {
+        //没有数据的情况下
+        if(ListUtil.isEmpty(contentList)){
+            HSSFSheet sheet = workbook.createSheet("sheet" + 0);
+            createHeader(sheet, template);
+            return;
+        }
         Map<Integer, Integer> splistResourseIndexByWorkCount = MathUtil.getSplistResourseIndexByWorkCount(65500, contentList.size());
         int i = 0;
         for (Map.Entry<Integer, Integer> integerIntegerEntry : splistResourseIndexByWorkCount.entrySet()) {
@@ -149,10 +161,13 @@ public class ExcelController extends BaseController {
                         cell.setCellValue(this.getEnumValues(clazz, object.getString(key), defaultKey, defaultDescription));
                     } else if (column.containsKey("dataType")) {
                         String dataType = (String) column.get("dataType");
+                        String dateFormat = (String) column.get("dateFormat");
                         String objectStr=null;
                         //日期的特别处理
                         if(dataType.equals("date")){
-                            objectStr= DateUtil.getDateString(object.getDate(key));
+                            //日期指定格式化
+                            dateFormat=StringUtils.isEmpty(dateFormat)?DateUtil.DEFAULT_FORMATE:dateFormat;
+                            objectStr= DateUtil.getDateString(object.getDate(key),dateFormat);
                             if (objectStr == null || objectStr.equals("") || objectStr.equals("{}")) {
                                 objectStr = "";
                             }
@@ -292,6 +307,7 @@ public class ExcelController extends BaseController {
             fileName = fileName + ".xls";
             response.setHeader("Content-disposition", "attachment; filename = " + new String(fileName.getBytes("GB2312"), "ISO8859_1") + "");
         }
+        response.setContentType("application/octet-stream;charset=UTF-8");
         OutputStream stream = response.getOutputStream();
         workbook.write(stream);
         stream.close();
