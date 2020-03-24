@@ -29,4 +29,23 @@ public class NumberUtil {
         }
     }
 
+    /***
+     * 删除小数后面的0
+     * @param str
+     * @return
+     */
+    public static String removeLastZero(String str) {
+        if (!str.contains(".")) {
+            return str;
+        }
+        //把结尾0替换成""
+        str = str.replaceAll("0+?$", "");
+        //结尾的小数点替换成空
+        return str.replaceAll("[.]$", "");
+    }
+
+    public static void main(String[] args) {
+        System.out.println(removeLastZero("130.00"));
+    }
+
 }
