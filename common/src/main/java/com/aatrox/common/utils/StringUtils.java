@@ -49,51 +49,6 @@ public class StringUtils extends org.springframework.util.StringUtils {
     }
 
     /**
-     * 超过border的字符串部门用胜率号代替
-     *
-     * @param str
-     * @param border
-     * @return
-     */
-    public static String getEllipsisStr(String str, Integer border) {
-        if (org.springframework.util.StringUtils.isEmpty(str) || str.length() <= border) {
-            return str;
-        }
-        return str.substring(0, border) + "...";
-    }
-
-    public static boolean isEmpty(String str) {
-        return str == null || str.length() < 1 || "null".equalsIgnoreCase(str);
-    }
-
-    public static boolean isNotEmpty(String str) {
-        return !isEmpty(str);
-    }
-
-    public static boolean isEmpty(String... obj) {
-        if (obj == null || obj.length == 0) {
-            return true;
-        }
-        for (String s : obj) {
-            if (isNotEmpty(s)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static boolean isNotEmpty(String... obj) {
-        if (obj == null || obj.length == 0) {
-            return false;
-        }
-        for (String anObj : obj) {
-            if (org.springframework.util.StringUtils.isEmpty(anObj)) {
-                return false;
-            }
-        }
-        return true;
-    }
-    /**
      * Join all the elements of a string array into a single
      * String.
      * <p>
@@ -162,6 +117,53 @@ public class StringUtils extends org.springframework.util.StringUtils {
 
         return result.toString();
     }
+
+    /**
+     * 超过border的字符串部门用胜率号代替
+     *
+     * @param str
+     * @param border
+     * @return
+     */
+    public static String getEllipsisStr(String str, Integer border) {
+        if (org.springframework.util.StringUtils.isEmpty(str) || str.length() <= border) {
+            return str;
+        }
+        return str.substring(0, border) + "...";
+    }
+
+    public static boolean isEmpty(String str) {
+        return str == null || str.length() < 1 || "null".equalsIgnoreCase(str);
+    }
+
+    public static boolean isNotEmpty(String str) {
+        return !isEmpty(str);
+    }
+
+    public static boolean isEmpty(String... obj) {
+        if (obj == null || obj.length == 0) {
+            return true;
+        }
+        for (String s : obj) {
+            if (isNotEmpty(s)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean isNotEmpty(String... obj) {
+        if (obj == null || obj.length == 0) {
+            return false;
+        }
+        for (String anObj : obj) {
+            if (org.springframework.util.StringUtils.isEmpty(anObj)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     /**
      * 获取原号码的显示结果
