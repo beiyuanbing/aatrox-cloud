@@ -118,7 +118,9 @@ public class FormUtil {
         Method m = object.getClass().getDeclaredMethod("size");
         int size = (Integer) m.invoke(object);
         for (int i = 0; i < size; i++) {
-            fillFormPropery(((List) object).get(i), currentPerson);
+            //可能list包含了多个对象，因为加上这个进行递归调用
+            fillForm(((List) object).get(i), currentPerson);
+            //fillFormPropery(((List) object).get(i), currentPerson);
         }
     }
 
