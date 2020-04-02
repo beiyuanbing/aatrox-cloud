@@ -1,7 +1,10 @@
 package com.aatrox.common.utils;
 
 
+import org.springframework.util.CollectionUtils;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -25,6 +28,24 @@ public class StringUtils extends org.springframework.util.StringUtils {
      */
     public static String join(String[] array) {
         return join(array, "");
+    }
+
+    public static String join(List<String> list,String delimiter){
+        if(CollectionUtils.isEmpty(list)){
+            return "";
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < list.size(); i++) {
+            if(i!=0){
+                stringBuilder.append(delimiter);
+            }
+            stringBuilder.append(list.get(i));
+        }
+        return stringBuilder.toString();
+    }
+
+    public static String join(List<String> list){
+        return join(list, "");
     }
 
     /**
@@ -80,13 +101,12 @@ public class StringUtils extends org.springframework.util.StringUtils {
      * will be returned.  Null elements of the array are allowed
      * and will be treated like empty Strings.
      *
-     * @param list     Array to be joined into a string.
      * @param delimiter String to place between array elements.
      * @return Concatenation of all the elements of the given array with the the delimiter in between.
      * @throws NullPointerException if array or delimiter is null.
      * @since ostermillerutils 1.05.00
      */
-    public static String join(List<String> list, String delimiter) {
+/*    public static String join(List<String> list, String delimiter) {
         if(list==null||list.size()==0){
             return "";
         }
@@ -94,7 +114,7 @@ public class StringUtils extends org.springframework.util.StringUtils {
         list.toArray(array);
         return join(array,delimiter);
 
-    }
+    }*/
     public static String join(String[] array, String delimiter) {
         // Cache the length of the delimiter
         // has the side effect of throwing a NullPointerException if
