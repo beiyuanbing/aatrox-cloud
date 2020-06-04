@@ -21,4 +21,9 @@ public class RandomUtil {
             return (int)((Math.random() * 9.0D + 1.0D) * (double)pow);
         }
     }
+
+    public static void main(String[] args) {
+        Integer a=null;
+        System.out.println(String.valueOf(a));
+    }
 }

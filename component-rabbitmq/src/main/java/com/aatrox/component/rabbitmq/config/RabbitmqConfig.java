@@ -1,6 +1,6 @@
 package com.aatrox.component.rabbitmq.config;
 
-import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -10,6 +10,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.env.Environment;
+
+import javax.annotation.Resource;
 
 /**
  * @author aatrox
@@ -58,8 +60,15 @@ public class RabbitmqConfig {
     /**
      * 定义队列名
      */
-    private final static String STRING = "string";
-
+    private final static String QUEUE_NAME = "string";
+    /***
+     * 交换机名
+     */
+    private final static String EXCHANGE_NAME="exchange";
+    /**
+     * 定义route key
+     */
+    private final static String ROUTE_KEY="routeKey";
 
     /**
      * 定义string队列
@@ -67,7 +76,37 @@ public class RabbitmqConfig {
      * @return
      */
     @Bean
-    public Queue string() {
-        return new Queue(STRING);
+    public Queue queue() {
+        return QueueBuilder.durable(QUEUE_NAME).build();
     }
+
+    /**
+     * 定义交换机
+     */
+    @Bean
+    public Exchange exchange(){
+        return ExchangeBuilder.topicExchange(EXCHANGE_NAME).build();
+    }
+
+    /**
+     * 交换机和队列的绑定
+     * @param queue
+     * @param exchange
+     * @return
+     */
+    @Bean
+    public Binding queueToExchange(Queue queue,Exchange exchange){
+        return BindingBuilder.bind(queue).to(exchange).with(ROUTE_KEY).noargs();
+    }
+
+    /**
+     * rabbitmq 的消息发送demo
+     */
+ /*   @Resource
+    private AmqpTemplate amqpTemplate;
+    public void sendMessage(RabbitTemplate rabbitTemplate){
+        Object msgObject=new Object();
+        rabbitTemplate.convertAndSend(EXCHANGE_NAME,ROUTE_KEY,msgObject);
+        amqpTemplate.convertAndSend(EXCHANGE_NAME,ROUTE_KEY,msgObject);
+    }*/
 }
