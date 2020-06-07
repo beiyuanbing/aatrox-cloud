@@ -1,7 +1,7 @@
 com/aatrox/autocode/sqlmapper/param/DBConnectParam.class
 com/aatrox/autocode/method/test/GeneratorMethodTest.class
-com/aatrox/autocode/method/param/FormInfo.class
 com/aatrox/autocode/project/test/NewProjectTest.class
+com/aatrox/autocode/method/param/FormInfo.class
 com/aatrox/autocode/feignmapper/test/GeneratorMapperTest.class
 com/aatrox/autocode/feignmapper/param/FeignDefinition$FeignMethodDefinition.class
 com/aatrox/autocode/method/helper/NewMethodHelper.class

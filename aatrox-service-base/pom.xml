@@ -2,16 +2,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <name>aatrox-service-base</name>
+    <groupId>com.aatrox</groupId>
+    <artifactId>aatrox-service-base</artifactId>
+    <version>1.0-SNAPSHOT</version>
     <parent>
         <artifactId>aatrox-cloud</artifactId>
         <groupId>com.aatrox</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
     <properties>
         <mybatisplus.version>3.1.1</mybatisplus.version>
     </properties>
-    <artifactId>aatrox-service-base</artifactId>
     <dependencies>
         <dependency>
             <groupId>io.swagger</groupId>
@@ -28,15 +31,22 @@
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
         </dependency>
+    <!-- https://mvnrepository.com/artifact/com.alibaba/druid -->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
-            <version>LATEST</version>
+            <version>1.1.22</version>
         </dependency>
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
             <version>${mybatisplus.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>spring-core</artifactId>
+                    <groupId>org.springframework</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.baomidou</groupId>

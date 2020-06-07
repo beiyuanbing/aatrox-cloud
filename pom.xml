@@ -36,20 +36,21 @@
         <module>service-dubbo-rpc</module>
         <module>aatrox-service-base</module>
         <module>aatrox-common-base</module>
+        <module>component-redis</module>
+        <module>aatrox-web-base</module>
         <module>mybatis-plus-generator</module>
         <module>services/log/log-service</module>
         <module>services/log/log-api-list</module>
         <module>service-dubbo-provider</module>
         <module>service-dubbo-consumer</module>
         <module>component-activemq</module>
-        <module>aatrox-web-base</module>
         <module>component-rabbitmq</module>
         <module>services/statistics/statistics-service</module>
         <module>services/statistics/statistics-apilist</module>
-        <module>aatrox-cloud-web-base</module>
         <module>aatrox-cloud-dependency</module>
+        <module>aatrox-cloud-web-base</module>
         <module>aatrox-wechat</module>
-        <module>component-redis</module>
+
     </modules>
 
     <dependencies>
