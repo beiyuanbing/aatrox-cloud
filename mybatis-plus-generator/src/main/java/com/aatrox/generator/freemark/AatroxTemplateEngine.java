@@ -22,7 +22,7 @@ public class AatroxTemplateEngine extends DefineAbstractTemplateEngine {
     @Override
     public AatroxTemplateEngine init(ConfigBuilder configBuilder) {
         super.init(configBuilder);
-        configuration = new Configuration();
+        configuration = new Configuration(Configuration.VERSION_2_3_0);
         configuration.setDefaultEncoding(ConstVal.UTF8);
         configuration.setClassForTemplateLoading(AatroxTemplateEngine.class, StringPool.SLASH);
         return this;
