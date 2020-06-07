@@ -22,34 +22,44 @@
     </parent>
 
     <modules>
+        <!--注册中心-->
+        <module>eureka-server</module>
+        <!--服务中心-->
+        <module>config-server</module>
+        <!--自动代码生成，类似easycode-->
         <module>code-generator</module>
+        <!--针对与mybatis-plus组件的自动代码生产-->
+        <module>mybatis-plus-generator</module>
+        <!--基础的工具类-->
         <module>common</module>
         <module>component</module>
-        <module>component-solr</module>
-        <module>eureka-server</module>
-        <module>config-server</module>
-        <module>services/order/order-service</module>
-        <module>services/order/order-api-list</module>
-        <module>web</module>
-        <module>services/oa/oa-api-list</module>
-        <module>services/oa/oa-service</module>
-        <module>service-dubbo-rpc</module>
-        <module>aatrox-service-base</module>
         <module>aatrox-common-base</module>
-        <module>component-redis</module>
-        <module>aatrox-web-base</module>
-        <module>mybatis-plus-generator</module>
-        <module>services/log/log-service</module>
-        <module>services/log/log-api-list</module>
-        <module>service-dubbo-provider</module>
-        <module>service-dubbo-consumer</module>
-        <module>component-activemq</module>
-        <module>component-rabbitmq</module>
-        <module>services/statistics/statistics-service</module>
-        <module>services/statistics/statistics-apilist</module>
+        <!--service的基础类-->
+        <module>aatrox-service-base</module>
         <module>aatrox-cloud-dependency</module>
         <module>aatrox-cloud-web-base</module>
+        <!--Dubbo的相关-->
+        <module>service-dubbo-rpc</module>
+        <module>service-dubbo-provider</module>
+        <module>service-dubbo-consumer</module>
+        <!--相关的组件-->
+        <module>component-activemq</module>
+        <module>component-redis</module>
+        <module>component-solr</module>
+        <module>component-rabbitmq</module>
         <module>aatrox-wechat</module>
+        <module>aatrox-web-base</module>
+        <!--相关服务和fegin-->
+        <module>services/log/log-service</module>
+        <module>services/log/log-api-list</module>
+        <module>services/oa/oa-api-list</module>
+        <module>services/oa/oa-service</module>
+        <module>services/statistics/statistics-service</module>
+        <module>services/statistics/statistics-apilist</module>
+        <module>services/order/order-service</module>
+        <module>services/order/order-api-list</module>
+        <!--web层-->
+        <module>web</module>
 
     </modules>
 
