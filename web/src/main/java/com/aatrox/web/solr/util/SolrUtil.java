@@ -3,7 +3,7 @@ package com.aatrox.web.solr.util;
 import com.aatrox.common.utils.ListUtil;
 import com.aatrox.common.utils.ReflectionUtils;
 import com.aatrox.common.utils.StringUtils;
-import com.aatrox.componentsolr.core.criteria.SearchCriteria;
+import com.aatrox.component.solr.core.criteria.SearchCriteria;
 import com.aatrox.web.dto.OrderSolrQueryForm;
 import com.aatrox.web.solr.model.OrderSolrField;
 import com.alibaba.fastjson.JSONObject;

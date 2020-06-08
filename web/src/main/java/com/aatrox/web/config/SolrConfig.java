@@ -1,8 +1,8 @@
 package com.aatrox.web.config;
 
 
-import com.aatrox.componentsolr.config.SolrLocalConfiguration;
-import com.aatrox.componentsolr.core.factory.SolrServerFactory;
+import com.aatrox.component.solr.config.SolrLocalConfiguration;
+import com.aatrox.component.solr.core.factory.SolrServerFactory;
 import com.aatrox.web.solr.OrderSolrSerach;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

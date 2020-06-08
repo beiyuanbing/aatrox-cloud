@@ -1,7 +1,7 @@
 package com.aatrox.web.solr;
 
-import com.aatrox.componentsolr.core.factory.SolrServerFactory;
-import com.aatrox.componentsolr.core.searcher.AbstractSearcher;
+import com.aatrox.component.solr.core.factory.SolrServerFactory;
+import com.aatrox.component.solr.core.searcher.AbstractSearcher;
 import com.aatrox.web.solr.model.OrderSolrModel;
 
 /**
