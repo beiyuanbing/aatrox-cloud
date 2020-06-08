@@ -1,6 +1,8 @@
 package com.aatrox.component.rabbitmq.config;
 
 import org.springframework.amqp.core.*;
+import org.springframework.amqp.rabbit.annotation.QueueBinding;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -12,6 +14,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.core.env.Environment;
 
 import javax.annotation.Resource;
+import java.io.UnsupportedEncodingException;
 
 /**
  * @author aatrox
@@ -108,5 +111,23 @@ public class RabbitmqConfig {
         Object msgObject=new Object();
         rabbitTemplate.convertAndSend(EXCHANGE_NAME,ROUTE_KEY,msgObject);
         amqpTemplate.convertAndSend(EXCHANGE_NAME,ROUTE_KEY,msgObject);
+    }*/
+
+    /**
+     * rabiitmq的消费者处理
+     * @param message
+     *
+     */
+    /*@RabbitListener(
+            bindings = @QueueBinding(
+            value = @org.springframework.amqp.rabbit.annotation.Queue(name = QUEUE_NAME, durable = "true"),
+            exchange = @org.springframework.amqp.rabbit.annotation.Exchange(name = EXCHANGE_NAME, type = ExchangeTypes.TOPIC,
+                    ignoreDeclarationExceptions = "true"),
+            key = {ROUTE_KEY}
+    ))
+    public void updateRoomApprove(Message message)  {
+       //处理的逻辑
+        System.out.println(message);
+        System.out.println(123);
     }*/
 }
