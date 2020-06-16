@@ -39,6 +39,7 @@ public class DefineFreemarkerTemplateEngine extends FreemarkerTemplateEngine {
         InjectionConfig injectionConfig = getConfigBuilder().getInjectionConfig();
         objectMap.putAll(injectionConfig.getMap());
         objectMap.put("openMybaitPlus",defineConfig.isOpenMybatisPlus());
+        objectMap.put("openForm",defineConfig.isOpenForm());
         objectMap.put("openMybaitsPlusAnnotion",defineConfig.isOpenMybaitsPlusAnnotion());
         //开始springCloud模式
         objectMap.put("springCloud",defineConfig.isSpringCloud());
