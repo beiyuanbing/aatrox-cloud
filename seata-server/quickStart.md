@@ -22,6 +22,7 @@
       seata:
         tx-service-group: minbox-seata
 7.需要使用分布式的方法加上seata注解    @GlobalTransactional进行管理全局的事务
+8.seat的模式需要在数据库增加undo_log的表
 
  
  
