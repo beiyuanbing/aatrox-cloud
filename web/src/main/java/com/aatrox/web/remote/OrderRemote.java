@@ -2,40 +2,35 @@ package com.aatrox.web.remote;
 
 import com.aatrox.orderapilist.fegin.OrderFegin;
 import com.aatrox.orderapilist.model.OrderInfoModel;
-import com.netflix.ribbon.proxy.annotation.Hystrix;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
-public class OrderRemote {
+public class OrderRemote{
+
     @Resource
-    private OrderFegin orderFegin;
+    private OrderFegin orderInfoFegin;
 
-    @Hystrix
-    public Object insert(OrderInfoModel model){
-        return orderFegin.insert(model);
+    public OrderInfoModel selectById(Integer id){
+        return orderInfoFegin.selectById(id);
     }
 
-    /**
-     * 此方法进行导出使用的
-     * @param paramsMap
-     * @return
-     */
-    @Hystrix
-    public List selectByParam(Map<String,Object> paramsMap){
-        if(paramsMap==null){
-            paramsMap=new HashMap<>();
-        }
-        return orderFegin.selectByParam(paramsMap);
+    public List<OrderInfoModel> selectAll(){
+        return orderInfoFegin.selectAll();
 
     }
-
-    @Hystrix
-    public OrderInfoModel query(Integer id) {
-        return orderFegin.selectByPrimaryKey(id);
+    public OrderInfoModel insertOrderInfo(OrderInfoModel record){
+        return orderInfoFegin.insertOrderInfo(record);
     }
+
+    public OrderInfoModel updateOrderInfo(OrderInfoModel record){
+        return orderInfoFegin.updateOrderInfo(record);
+    }
+
+    public int deleteById(Integer id){
+        return orderInfoFegin.deleteById(id);
+    }
+
 }

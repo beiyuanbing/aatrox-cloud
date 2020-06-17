@@ -4,6 +4,10 @@ spring:
   profiles:
     active: dev
   cloud:
+  # seata分组
+    alibaba:
+      seata:
+        tx-service-group: minbox-seata
     config:
       #    uri: http://clound.byb.eureka.com:61100/   #Config server的uri
       # uri: http://clound.byb.eureka.com:61100/

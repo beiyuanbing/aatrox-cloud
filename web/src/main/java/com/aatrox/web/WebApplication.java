@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Import;
 @Import({//ActiveMqBaseConfig.class, RabbitmqBaseConfig.class,
         RedisBaseConfig.class})
 //开启缓存的使用
-@EnableCaching
+//@EnableCaching
 public class WebApplication extends BaseApplication {
     public static void main(String[] args) {
         SpringApplication.run(WebApplication.class, args);

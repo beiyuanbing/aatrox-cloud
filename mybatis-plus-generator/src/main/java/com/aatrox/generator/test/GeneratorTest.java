@@ -23,16 +23,19 @@ public class GeneratorTest {
     public void testSingle(){
         GeneratorInfo generatorInfo = new GeneratorInfo()
                 .setDataBaseType(DBType.MYSQL)
-                .setDatabaseUrl("jdbc:mysql://localhost:3306/12306?useUnicode=true&useSSL=false&characterEncoding=utf8")
+                .setDatabaseUrl("jdbc:mysql://localhost:3306/order?useUnicode=true&useSSL=false&characterEncoding=utf8")
                 .setDatabaseUserName("root")
                 .setDatabasePassword("123456")
-                .setIncludeTableName("City")
-                .setPackageModuleName("service-12306")
-                .setEntityName("City")
+                .setIncludeTableName("t_order_info")
+                .setPackageModuleName("service-order")
+                .setEntityName("OrderInfo")
                 .setDefaultLongOutput(false)
                 .setSingle(true)
-                .setSpringCloud(false)
+                .setOpenForm(false)
+                .setTablePrefix("t_")
+                .setSpringCloud(true)
                 .setOpenMybatisPlus(true)
+                .setFileOverride(true)
                 .setOpenMybaitsPlusAnnotion(true);
         GeneratorUtil.generator(generatorInfo);
     }

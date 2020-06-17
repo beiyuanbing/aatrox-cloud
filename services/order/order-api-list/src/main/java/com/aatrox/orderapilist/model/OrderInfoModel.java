@@ -7,50 +7,71 @@ package com.aatrox.orderapilist.model;
  * Create at 2019-05-17 10:05
  */
 
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableField;
+import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-import java.util.Date;
-
 /**
- * 消息Model
- * Created by byb on 2019-05-20
+ * <p>
+ * 订单表
+ * </p>
+ *
+ * @author Aatrox
+ * @since 2020-06-17
  */
-@ApiModel(description = "订单系统")
-public class OrderInfoModel {
-    @ApiModelProperty(value = "")
+@TableName(value = "t_order_info")
+@ApiModel(value="OrderInfoModel对象", description="订单表")
+public class OrderInfoModel implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @ApiModelProperty(value = "主键")
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    @ApiModelProperty(value = "订单名称")
-    private String name;
+    @TableField("good_id")
+    private Integer goodId;
 
-    @ApiModelProperty(value = "订单创建时间")
-    private Date createTime;
+    @TableField("account_id")
+    private Integer accountId;
 
-    public OrderInfoModel setId(Integer id) {
-        this.id = id;
-        return this;
-    }
+    @TableField("price")
+    private Double price;
 
     public Integer getId() {
         return id;
     }
 
-    public OrderInfoModel setName(String name) {
-        this.name = name;
+    public OrderInfoModel setId(Integer id) {
+        this.id = id;
         return this;
     }
-
-    public String getName() {
-        return name;
+    public Integer getGoodId() {
+        return goodId;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public OrderInfoModel setGoodId(Integer goodId) {
+        this.goodId = goodId;
+        return this;
+    }
+    public Integer getAccountId() {
+        return accountId;
     }
 
-    public OrderInfoModel setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public OrderInfoModel setAccountId(Integer accountId) {
+        this.accountId = accountId;
+        return this;
+    }
+    public Double getPrice() {
+        return price;
+    }
+
+    public OrderInfoModel setPrice(Double price) {
+        this.price = price;
         return this;
     }
 
@@ -58,8 +79,9 @@ public class OrderInfoModel {
     public String toString() {
         return "OrderInfoModel{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
-                ", createTime='" + createTime + '\'' +
-                '}';
+                ", goodId=" + goodId +
+                ", accountId=" + accountId +
+                ", price=" + price +
+                "}";
     }
 }

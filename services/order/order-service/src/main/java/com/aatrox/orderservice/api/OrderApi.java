@@ -15,56 +15,42 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/order")
+@RequestMapping(value = "/orderInfo")
 public class OrderApi implements OrderFegin {
 
     @Resource
     private OrderInfoService orderInfoService;
+
     @Override
-    @PostMapping("/deleteByPrimaryKey")
-    public int deleteByPrimaryKey(@RequestBody Integer id) {
-        return orderInfoService.deleteByPrimaryKey(id);
+    @PostMapping("/selectById")
+    public OrderInfoModel selectById(@RequestBody Integer id){
+        return orderInfoService.getById(id);
     }
 
     @Override
-    @PostMapping("/insert")
-    public int insert(@RequestBody OrderInfoModel record) {
-        return orderInfoService.insert(record);
+    @PostMapping("/selectAll")
+    public List<OrderInfoModel> selectAll(){
+        return orderInfoService.list();
     }
 
     @Override
-    @PostMapping("/insertSelective")
-    public int insertSelective(@RequestBody OrderInfoModel record) {
-        return orderInfoService.insertSelective(record);
+    @PostMapping("/insertOrderInfo")
+    public OrderInfoModel insertOrderInfo(@RequestBody OrderInfoModel record){
+        orderInfoService.saveOrUpdate(record);
+        return record;
     }
 
     @Override
-    @PostMapping("/selectByPrimaryKey")
-    public OrderInfoModel selectByPrimaryKey(@RequestBody Integer id) {
-        return orderInfoService.selectByPrimaryKey(id);
+    @PostMapping("/updateOrderInfo")
+    public OrderInfoModel updateOrderInfo(@RequestBody OrderInfoModel record){
+        orderInfoService.updateById(record);
+        return record;
     }
 
     @Override
-    @PostMapping("/updateByPrimaryKeySelective")
-    public int updateByPrimaryKeySelective(@RequestBody OrderInfoModel record) {
-        return orderInfoService.updateByPrimaryKeySelective(record);
+    @PostMapping("/deleteById")
+    public int deleteById(@RequestBody Integer id){
+        return orderInfoService.removeById(id)?1:0;
     }
 
-    @Override
-    @PostMapping("/updateByPrimaryKey")
-    public int updateByPrimaryKey(@RequestBody OrderInfoModel record) {
-        return orderInfoService.updateByPrimaryKey(record);
-    }
-
-    @Override
-    @PostMapping("/selectPage")
-    public Page<OrderInfoModel> selectPage(@RequestBody OrderInfoQueryForm queryForm) {
-        return orderInfoService.selectPage(queryForm);
-    }
-
-    @Override
-    @PostMapping("/selectByParam")
-    public List<OrderInfoModel> selectByParam(@RequestBody(required=false) Map<String, Object> paramsMap) {
-        return orderInfoService.selectByParam(paramsMap);
-    }
 }

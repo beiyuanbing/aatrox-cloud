@@ -1,3 +1,5 @@
-com/aatrox/oa/apilist/fegin/UserInfoFegin.class
-com/aatrox/oa/apilist/model/UserInfoModel.class
 com/aatrox/oa/apilist/form/UserInfoQueryPageForm.class
+com/aatrox/oa/apilist/fegin/UserInfoFegin.class
+com/aatrox/oa/apilist/model/AccountModel.class
+com/aatrox/oa/apilist/fegin/AccountFegin.class
+com/aatrox/oa/apilist/model/UserInfoModel.class

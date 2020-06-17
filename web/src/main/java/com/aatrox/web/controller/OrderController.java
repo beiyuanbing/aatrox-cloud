@@ -1,26 +1,29 @@
 package com.aatrox.web.controller;
 
 import com.aatrox.component.redis.RedisCache;
+import com.aatrox.oa.apilist.model.AccountModel;
+import com.aatrox.orderapilist.model.GoodModel;
 import com.aatrox.orderapilist.model.OrderInfoModel;
 import com.aatrox.web.base.controller.BaseController;
+import com.aatrox.web.remote.AccountRemote;
+import com.aatrox.web.remote.GoodRemote;
+import com.aatrox.web.remote.LogRemote;
 import com.aatrox.web.remote.OrderRemote;
 import com.aatrox.web.solr.OrderSolrSerach;
-import com.aatrox.web.solr.model.OrderSolrModel;
-import com.alibaba.fastjson.JSONObject;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.UUID;
 
 //import com.aatrox.web.mq.producer.MsgQueueSender;
 
 @RestController
-@RequestMapping("order")
+@RequestMapping("/order")
 public class OrderController extends BaseController {
 
     /*    @Autowired
@@ -34,37 +37,38 @@ public class OrderController extends BaseController {
     private RedisCache redisCache;
     @Resource
     private OrderSolrSerach orderSolrSerach;
+    @Resource
+    private LogRemote logRemote;
     //@Resource
     //private MsgQueueSender msgQueueSender;
     private static final String LOCK_KEY = "LOCK_KEY";
 
+    @Resource
+    private GoodRemote goodRemote;
+
+    @Resource
+    private AccountRemote accountRemote;
+
     @Autowired
     private Environment environment;
 
-    @PostMapping("/insert")
-    public Object insert(OrderInfoModel model){
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("key", "1");
-        //msgQueueSender.send("mytest", jsonObject);
-//        RedisLock redisLock = new RedisLock(redisCache);
-//        try {
-//            if (redisLock.tryLock(LOCK_KEY)) {
-//                String hhh = jedisService.get("hhh");
-//                System.out.println(hhh);
-//            }
-//        } finally {
-//            redisLock.unLock(LOCK_KEY);
-//        }
-        orderSolrSerach.save(new OrderSolrModel().setId(UUID.randomUUID().toString()).setName("测试"));
+    @PostMapping("/submitOrder")
+    @GlobalTransactional
+    public String submitOrder(
+            @RequestParam("goodId") Integer goodId,
+            @RequestParam("accountId") Integer accountId,
+            @RequestParam("buyCount") int buyCount) {
 
-        return orderRemote.insert(model);
-    }
+        GoodModel good = goodRemote.selectById(goodId);
 
-    @PostMapping("/query")
-    //此处就是缓存的具体使用了
-    @Cacheable(value = "order")
-    public Object query(Integer id){
-        return returnSuccessInfo(orderRemote.query(id));
+        Double orderPrice = buyCount * good.getPrice();
+
+        goodRemote.reduceStock(new GoodModel().setId(goodId).setStock(buyCount));
+
+        accountRemote.deduction(new AccountModel().setId(accountId).setMoney(orderPrice));
+
+        orderRemote.insertOrderInfo(new OrderInfoModel().setAccountId(accountId).setGoodId(goodId).setPrice(orderPrice));
+        return "下单成功.";
     }
 
 }

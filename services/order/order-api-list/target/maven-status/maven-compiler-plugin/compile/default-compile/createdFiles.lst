@@ -1,4 +1,6 @@
+com/aatrox/orderapilist/fegin/GoodFegin.class
 com/aatrox/orderapilist/constants/ZoneStants.class
+com/aatrox/orderapilist/model/GoodModel.class
 com/aatrox/orderapilist/fegin/OrderFegin.class
 com/aatrox/orderapilist/model/OrderInfoModel.class
 com/aatrox/orderapilist/form/OrderInfoQueryForm.class

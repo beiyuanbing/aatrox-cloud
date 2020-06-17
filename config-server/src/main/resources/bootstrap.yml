@@ -8,9 +8,9 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/beiyuanbing/aatrox-cloud
+          uri: https://gitee.com/poetry-code/coding.git
           skipSslValidation: true
           #查找config的所有文件,如果config下面没有多级的目录就只用写config
           search-paths: config/**
-          username:
-          password:
+          username: 425210220@qq.com
+          password: BYB19910717

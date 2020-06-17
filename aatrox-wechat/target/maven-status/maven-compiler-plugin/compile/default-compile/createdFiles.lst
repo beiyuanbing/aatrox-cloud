@@ -4,8 +4,8 @@ com/aatrox/wechat/wxmp/base/WxmpBaseRequest.class
 com/aatrox/wechat/wxmp/request/SubscribeMessageSendRequest.class
 com/aatrox/wechat/wxmp/AatroxWxmpProperties.class
 com/aatrox/wechat/wxmp/response/AccessTokenResponse.class
-com/aatrox/wechat/wxmp/WxmpCacheKey.class
 com/aatrox/wechat/wxmp/request/AccessTokenRequest.class
+com/aatrox/wechat/wxmp/WxmpCacheKey.class
 com/aatrox/wechat/demo/WxmpDemo.class
 com/aatrox/wechat/wxmp/service/WechatService$CheckerRunner.class
 com/aatrox/wechat/wxmp/request/AuthCode2SessionRequest.class

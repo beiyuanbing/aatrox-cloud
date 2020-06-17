@@ -2,6 +2,10 @@ spring:
   application:
     name: service-oa
   cloud:
+    # seata分组
+    alibaba:
+      seata:
+        tx-service-group: minbox-seata
     config:
       #    uri: http://clound.byb.eureka.com:61100/   #Config server\u7684uri
       # uri: http://clound.byb.eureka.com:61100/
@@ -16,7 +20,7 @@ spring:
         multiplier: 1.1D                    #\u4E0B\u4E00\u6B21\u91CD\u8BD5\u95F4\u9694\u65F6\u95F4\u7684\u4E58\u6570\uFF0C\u6BD4\u5982\u5F00\u59CB1000\uFF0C\u4E0B\u4E00\u6B21\u5C31\u662F1000*1.1=1100
         max-interval: 2000              #\u6700\u5927\u91CD\u8BD5\u65F6\u95F4\uFF0C\u9ED8\u8BA42000
         max-attempts: 3                 #\u6700\u5927\u91CD\u8BD5\u6B21\u6570\uFF0C\u9ED8\u8BA46\u6B21
-      name: database  #\u6307\u5B9A\u4E86\u914D\u7F6E\u6587\u4EF6\u7684\u5E94\u7528\u540D//\u5982\u679C\u6CA1\u7ED9\u7684\u8BDD\uFF0C\u5C31\u4F1A\u9ED8\u8BA4\u4F7F\u7528\u9879\u76EE\u540D\u7684spring.application.name\u7684\u503C
+      name: mysql-oa  #\u6307\u5B9A\u4E86\u914D\u7F6E\u6587\u4EF6\u7684\u5E94\u7528\u540D//\u5982\u679C\u6CA1\u7ED9\u7684\u8BDD\uFF0C\u5C31\u4F1A\u9ED8\u8BA4\u4F7F\u7528\u9879\u76EE\u540D\u7684spring.application.name\u7684\u503C
 server:
   port: 61003
 eureka:

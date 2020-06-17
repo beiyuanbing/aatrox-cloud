@@ -37,6 +37,12 @@
                     </exclusion>
                 </exclusions>-->
         </dependency>
+        <!--seata-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-seata</artifactId>
+            <version>2.1.0.RELEASE</version>
+        </dependency>
         <dependency>
             <groupId>com.aatrox</groupId>
             <artifactId>aatrox-service-base</artifactId>

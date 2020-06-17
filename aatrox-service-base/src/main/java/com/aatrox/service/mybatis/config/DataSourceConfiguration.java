@@ -2,11 +2,10 @@ package com.aatrox.service.mybatis.config;
 
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.p6spy.engine.spy.P6DataSource;
+import io.seata.rm.datasource.DataSourceProxy;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import javax.sql.DataSource;
 import java.sql.SQLException;
 
@@ -32,6 +31,7 @@ public class DataSourceConfiguration {
 
     @Bean(name = "dataSource")
     public DataSource dataSourceTarget() throws SQLException {
+
         DruidDataSource dataSourceDefault = new DruidDataSource();
         dataSourceDefault.setDriverClassName(driver);
         dataSourceDefault.setUrl(url);
@@ -43,7 +43,7 @@ public class DataSourceConfiguration {
         dataSourceDefault.setPoolPreparedStatements(true);
         dataSourceDefault.setMaxPoolPreparedStatementPerConnectionSize(20);
         //使用P6时才使用的，不是的话，直接返回dataSourceDefault
-        return new P6DataSource(dataSourceDefault);
+        return  new DataSourceProxy(dataSourceDefault);
     }
 
 }

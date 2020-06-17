@@ -1,5 +1,6 @@
 package com.aatrox.logservice.api;
 
+import com.aatrox.common.utils.StringUtils;
 import com.aatrox.logservice.entity.LogRecord;
 import com.aatrox.logservice.feign.LogFeign;
 import com.aatrox.logservice.service.LogRecordService;
@@ -27,6 +28,9 @@ public class LogApi implements LogFeign {
     @Override
     @PostMapping("/insert")
     public int insert(@RequestBody LogRecord record) {
+        if(StringUtils.isEmpty(record.getContent())){
+            throw new RuntimeException("不能为空");
+        }
         return logRecordService.save(record) ? 1 : 0;
     }
 

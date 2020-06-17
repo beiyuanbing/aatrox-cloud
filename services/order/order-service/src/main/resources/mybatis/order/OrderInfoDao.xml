@@ -1,79 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.aatrox.orderservice.dao.OrderInfoDao">
+
+  <!-- 通用查询映射结果 -->
   <resultMap id="BaseResultMap" type="com.aatrox.orderapilist.model.OrderInfoModel">
-    <!--@mbg.generated-->
-    <id column="fid" jdbcType="INTEGER" property="id" />
-    <result column="fname" jdbcType="VARCHAR" property="name" />
-    <result column="f_create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <id column="id" property="id"/>
+    <result column="good_id" property="goodId"/>
+    <result column="account_id" property="accountId"/>
+    <result column="price" property="price"/>
   </resultMap>
+
+  <!-- 通用查询结果列 -->
   <sql id="Base_Column_List">
-    <!--@mbg.generated-->
-    fid, fname
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    <!--@mbg.generated-->
-    select 
-    <include refid="Base_Column_List" />
-    from t_order_info
-    where fid = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    <!--@mbg.generated-->
-    delete from t_order_info
-    where fid = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" keyColumn="fid" keyProperty="id" parameterType="com.aatrox.orderapilist.model.OrderInfoModel" useGeneratedKeys="true">
-    <!--@mbg.generated-->
-    insert into t_order_info (fname,f_create_time)
-    values (#{name,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP})
-  </insert>
-  <insert id="insertSelective" keyColumn="fid" keyProperty="id" parameterType="com.aatrox.orderapilist.model.OrderInfoModel" useGeneratedKeys="true">
-    <!--@mbg.generated-->
-    insert into t_order_info
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="name != null">
-        fname,
-      </if>
-      <if test="createTime != null">
-        f_create_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.aatrox.orderapilist.model.OrderInfoModel">
-    <!--@mbg.generated-->
-    update t_order_info
-    <set>
-      <if test="name != null">
-        fname = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        f_create_time = #{createTime,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where fid = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.aatrox.orderapilist.model.OrderInfoModel">
-    <!--@mbg.generated-->
-    update t_order_info
-    set fname = #{name,jdbcType=VARCHAR},
-    f_create_time = #{createTime,jdbcType=VARCHAR}
-    where fid = #{id,jdbcType=INTEGER}
-  </update>
+        id, good_id, account_id, price
+    </sql>
 
-  <select id="selectPage" parameterType="com.aatrox.orderapilist.form.OrderInfoQueryForm" resultMap="BaseResultMap">
-      select * from t_order_info
-    </select>
-
-  <select id="selectByParam" parameterType="map" resultMap="BaseResultMap">
-      select * from t_order_info
-    </select>
 </mapper>
