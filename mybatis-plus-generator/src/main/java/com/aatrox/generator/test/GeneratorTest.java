@@ -66,7 +66,7 @@ public class GeneratorTest {
                 new DefineBean().setBeanPackage(DefineBeanType.XML.getBeanPackage()).setTemplatePath(DefineBeanType.XML.getTemplatePath()),
                 new DefineBean().setBeanPackage(DefineBeanType.SERVICE.getBeanPackage()).setTemplatePath(DefineBeanType.SERVICE.getTemplatePath()),
                 new DefineBean().setBeanPackage(DefineBeanType.SERVICEIMPL.getBeanPackage()).setTemplatePath(DefineBeanType.SERVICEIMPL.getTemplatePath()),
-                new DefineBean().setBeanPackage(DefineBeanType.FEGION.getBeanPackage()).setTemplatePath(DefineBeanType.FEGION.getTemplatePath()),
+                new DefineBean().setBeanPackage(DefineBeanType.FEGIN.getBeanPackage()).setTemplatePath(DefineBeanType.FEGIN.getTemplatePath()),
                 new DefineBean().setBeanPackage(DefineBeanType.API.getBeanPackage()).setTemplatePath(DefineBeanType.API.getTemplatePath()),
                 new DefineBean().setBeanPackage(DefineBeanType.REMOTE.getBeanPackage()).setTemplatePath(DefineBeanType.REMOTE.getTemplatePath()),
                 new DefineBean().setBeanPackage(DefineBeanType.CONTROLLER.getBeanPackage()).setTemplatePath(DefineBeanType.CONTROLLER.getTemplatePath()))

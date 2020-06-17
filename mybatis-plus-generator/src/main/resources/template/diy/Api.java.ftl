@@ -53,7 +53,7 @@ public class ${Api.fileName} implements ${Fegin.fileName} {
     @PostMapping("/insert${entity}")
     <#if openMybaitPlus>
     public ${Model.fileName} insert${entity}(@RequestBody ${Model.fileName} record){
-        ${Service.fileName?uncap_first}.updateById(record);
+        ${Service.fileName?uncap_first}.saveOrUpdate(record);
         return record;
     }
     <#else>
@@ -62,7 +62,7 @@ public class ${Api.fileName} implements ${Fegin.fileName} {
     <#else>
     public ${Model.fileName} insert${entity}(@RequestBody ${Model.fileName} record){
     </#if>
-        return ${Service.fileName?uncap_first}.update${entity}(record);
+        return ${Service.fileName?uncap_first}.insert${entity}(record);
     }
     </#if>
 

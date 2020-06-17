@@ -387,8 +387,8 @@ public class GeneratorInfo {
                     .setTemplatePath(DefineBeanType.API.getTemplatePath());
             remote=new DefineBean().setFileName(entityName+CommonStringUtil.captureName(DefineBeanType.REMOTE.name())).setBeanPackage(DefineBeanType.REMOTE.getBeanPackage())
                     .setTemplatePath(DefineBeanType.REMOTE.getTemplatePath());
-            fegin=new DefineBean().setFileName(entityName+CommonStringUtil.captureName(DefineBeanType.FEGION.name())).setBeanPackage(DefineBeanType.FEGION.getBeanPackage())
-                    .setTemplatePath(DefineBeanType.FEGION.getTemplatePath());
+            fegin=new DefineBean().setFileName(entityName+CommonStringUtil.captureName(DefineBeanType.FEGIN.name())).setBeanPackage(DefineBeanType.FEGIN.getBeanPackage())
+                    .setTemplatePath(DefineBeanType.FEGIN.getTemplatePath());
         }
         DefineTemplateConfig defineTemplateConfig = new DefineTemplateConfig().setModel(model).setDao(dao)
                 .setXml(xml).setService(service).setApi(api).setRemote(remote)

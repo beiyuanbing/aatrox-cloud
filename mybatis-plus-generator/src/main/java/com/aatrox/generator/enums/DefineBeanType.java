@@ -16,7 +16,7 @@ public enum DefineBeanType {
     XML("com.aatrox.xml",GeneratorConstants.XML_TEMPLATE, StringPool.DOT_XML),
     SERVICE("com.aatrox.service",GeneratorConstants.SERVER_TEMPLATE, StringPool.DOT_JAVA),
     SERVICEIMPL("com.aatrox.service.impl",GeneratorConstants.SERVERIMPL_TEMPLATE, StringPool.DOT_JAVA),
-    FEGION("com.aatrox.fegin",GeneratorConstants.FEGIN_TEMPLATE, StringPool.DOT_JAVA),
+    FEGIN("com.aatrox.fegin",GeneratorConstants.FEGIN_TEMPLATE, StringPool.DOT_JAVA),
     API("com.aatrox.api",GeneratorConstants.API_TEMPLATE, StringPool.DOT_JAVA),
     REMOTE("com.aatrox.remote",GeneratorConstants.REMOTE_TEMPLATE, StringPool.DOT_JAVA),
     CONTROLLER("com.aatrox.controller",GeneratorConstants.CONTROLLER_TEMPLATE, StringPool.DOT_JAVA);
