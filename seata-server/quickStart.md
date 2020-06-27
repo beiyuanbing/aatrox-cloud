@@ -1,4 +1,4 @@
-微服务的分布式事务使用的方式
+微服务的分布式事务使用的方式 AT模式的使用方式
 
  1.解压后使用，进入bin目录执行此命令作用
  每个微服务的file.conf会把事务管理链接到这个应用上
@@ -23,6 +23,10 @@
         tx-service-group: minbox-seata
 7.需要使用分布式的方法加上seata注解    @GlobalTransactional进行管理全局的事务
 8.seat的模式需要在数据库增加undo_log的表
+
+
+seata还有MT模式后续会引入相关的的代码
+
 
  
  
