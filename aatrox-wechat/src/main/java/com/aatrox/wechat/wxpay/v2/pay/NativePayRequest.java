@@ -1,30 +1,31 @@
 package com.aatrox.wechat.wxpay.v2.pay;
 
+import com.aatrox.wechat.wxpay.WxPayService;
 import com.aatrox.wechat.wxpay.v2.request.BasePayRequest;
 import com.aatrox.wechat.wxpay.v2.request.BasePayResponse;
-import com.aatrox.wechat.wxpay.WxPayService;
-
+import com.aatrox.wechat.wxpay.v2.response.NativePayResponse;
 
 import java.util.Date;
 
 /**
  * @author aatrox
- * @desc JSAPI支付（或小程序支付)
- * @date 2020/6/30
+ * @desc  二维码微信支付封装对象
+ * @see <a href="https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=9_1">更多明细</a>
+ * @date 2020/7/1
  */
-public class AppPayRequest extends BasePayRequest<BasePayResponse> {
+public class NativePayRequest extends BasePayRequest<NativePayResponse> {
 
     //交易类型
     private String trade_type = "APP";
 
-    public AppPayRequest(String out_trade_no, String body, double price, Date empireTime, String spbill_create_ip,
+    public NativePayRequest(String out_trade_no, String body, double price, Date empireTime, String spbill_create_ip,
                          String url) {
         super(out_trade_no, body, price, empireTime, spbill_create_ip, url);
     }
 
     @Override
-    public BasePayResponse doRequest(WxPayService wxPayService) {
-        BasePayResponse response = doRequest(wxPayService,BasePayResponse.class);
+    public NativePayResponse doRequest(WxPayService wxPayService) {
+        NativePayResponse response = doRequest(wxPayService, NativePayResponse.class);
         return response;
     }
 
@@ -32,7 +33,7 @@ public class AppPayRequest extends BasePayRequest<BasePayResponse> {
         return trade_type;
     }
 
-    public AppPayRequest setTrade_type(String trade_type) {
+    public NativePayRequest setTrade_type(String trade_type) {
         this.trade_type = trade_type;
         return this;
     }
