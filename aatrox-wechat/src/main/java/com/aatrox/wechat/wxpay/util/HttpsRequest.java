@@ -32,6 +32,10 @@ public class HttpsRequest {
     /**HTTP请求器**/
     private CloseableHttpClient httpClient;
 
+    private final String contentType_JSON = "application/json";
+
+    private final String contentType_XML = "text/xml";
+
     public void setRequestConfig(RequestConfig requestConfig) {
         this.requestConfig = requestConfig;
     }
@@ -57,7 +61,7 @@ public class HttpsRequest {
         String postDataXML = xStreamForRequestPostData.toXML(xmlObj);
         logger.info("[pay:weixin][post]");
         logger.info(postDataXML);
-        return this.excute(url,postDataXML);
+        return this.excute(url,postDataXML,contentType_XML);
     }
 
     /**
@@ -68,17 +72,17 @@ public class HttpsRequest {
      */
     public String sendPostJson(String url, Object object){
         String jsonStr = JSON.toJSONString(object);
-        return this.excute(url,jsonStr);
+        return this.excute(url,jsonStr, contentType_JSON);
 
     }
 
-    protected String excute(String url,String entityStr){
+    protected String excute(String url,String entityStr,String contentType){
         String result = null;
 
         HttpPost httpPost = new HttpPost(url);
         //得指明使用UTF-8编码，否则到API服务器XML的中文不能被成功识别
         StringEntity postEntity = new StringEntity(entityStr, "UTF-8");
-        httpPost.addHeader("Content-Type", "text/xml");
+        httpPost.addHeader("Content-Type", contentType);
         httpPost.setEntity(postEntity);
         //设置请求器的配置
         httpPost.setConfig(requestConfig);

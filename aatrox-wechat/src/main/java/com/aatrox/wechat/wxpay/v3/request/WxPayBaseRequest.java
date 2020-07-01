@@ -1,10 +1,10 @@
-package com.aatrox.wechat.wxpay.v2.request;
+package com.aatrox.wechat.wxpay.v3.request;
 
-import com.aatrox.wechat.wxpay.util.HttpsRequest;
-import com.aatrox.wechat.wxpay.util.Signature;
 import com.aatrox.wechat.util.XMLParser;
 import com.aatrox.wechat.wxpay.WxPayConfigInfo;
 import com.aatrox.wechat.wxpay.WxPayService;
+import com.aatrox.wechat.wxpay.util.HttpsRequest;
+import com.aatrox.wechat.wxpay.util.Signature;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
@@ -29,15 +29,7 @@ public abstract class WxPayBaseRequest<T extends WxPayBaseResponse> {
     /**
      * 微信支付分配的商户号
      **/
-    protected String mch_id;
-    /**
-     * 随机字符串，不长于32位。推荐随机数生成算法
-     **/
-    protected String nonce_str = UUID.randomUUID().toString().toUpperCase().replaceAll("-", "");
-    /**
-     * 签名，详见签名生成算法
-     **/
-    protected String sign;
+    protected String mchid;
 
     @JSONField(serialize = false)
     @XStreamOmitField
@@ -53,12 +45,11 @@ public abstract class WxPayBaseRequest<T extends WxPayBaseResponse> {
         bizContent = JSONObject.toJSONString(this);
         wxPayConfig = wxPayService.getWxPayConfig();
         appid = this.wxPayConfig.getAppId();
-        mch_id = this.wxPayConfig.getMchId();
+        mchid = this.wxPayConfig.getMchId();
 
         String method = logRequest();
 
         try{
-            setPostSign(this);
             HttpsRequest request = initHttpsRequest();
             /**调用请求获取返回数据**/
             String result = this.getPostResult(request);
@@ -93,18 +84,6 @@ public abstract class WxPayBaseRequest<T extends WxPayBaseResponse> {
         hr.setHttpClient(HttpClients.custom().build());
     }
 
-    /**
-     * 生成微信支付签名
-     **/
-    private void setPostSign(WxPayBaseRequest post) throws IllegalAccessException {
-        addParam(wxPayConfig);
-        sign = Signature.getSign(post,wxPayConfig.getPartnerKey());
-    }
-
-    protected void addParam(WxPayConfigInfo wxPayConfig){
-        //do nothing
-    }
-
     protected abstract String requestPath();
 
     private String logRequest() {
@@ -118,15 +97,7 @@ public abstract class WxPayBaseRequest<T extends WxPayBaseResponse> {
         return appid;
     }
 
-    public String getMch_id() {
-        return mch_id;
-    }
-
-    public String getNonce_str() {
-        return nonce_str;
-    }
-
-    public String getSign() {
-        return sign;
+    public String getMchid() {
+        return mchid;
     }
 }
