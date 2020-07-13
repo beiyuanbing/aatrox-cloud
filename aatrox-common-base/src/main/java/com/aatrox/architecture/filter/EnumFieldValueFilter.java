@@ -1,6 +1,6 @@
 package com.aatrox.architecture.filter;
 
-import com.aatrox.common.annotation.EnumToStr;
+import com.aatrox.architecture.annotation.EnumToStr;
 import com.alibaba.fastjson.serializer.ValueFilter;
 
 import java.lang.reflect.Field;

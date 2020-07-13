@@ -13,5 +13,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface AccountService extends IService<AccountModel> {
 
     void deduction(AccountModel record);
+
+    int insetAccount(AccountModel record);
 }
 

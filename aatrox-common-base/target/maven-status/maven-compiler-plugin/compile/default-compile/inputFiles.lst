@@ -5,9 +5,11 @@
 /Users/apple/Documents/code/aatrox-cloud/aatrox-common-base/src/main/java/com/aatrox/ContextHolder.java
 /Users/apple/Documents/code/aatrox-cloud/aatrox-common-base/src/main/java/com/aatrox/threads/LocalCallable.java
 /Users/apple/Documents/code/aatrox-cloud/aatrox-common-base/src/main/java/com/aatrox/threads/ThreadCachePool.java
+/Users/apple/Documents/code/aatrox-cloud/aatrox-common-base/src/main/java/com/aatrox/architecture/aspect/ExceptionConvertAspect.java
 /Users/apple/Documents/code/aatrox-cloud/aatrox-common-base/src/main/java/com/aatrox/threads/ThreadFixedPool.java
 /Users/apple/Documents/code/aatrox-cloud/aatrox-common-base/src/main/java/com/aatrox/apilist/form/RequestResultException.java
 /Users/apple/Documents/code/aatrox-cloud/aatrox-common-base/src/main/java/com/aatrox/apilist/validate/size/Sizable.java
+/Users/apple/Documents/code/aatrox-cloud/aatrox-common-base/src/main/java/com/aatrox/architecture/filter/EnumFieldValueFilter.java
 /Users/apple/Documents/code/aatrox-cloud/aatrox-common-base/src/main/java/com/aatrox/apilist/validate/limitword/LimitWord.java
 /Users/apple/Documents/code/aatrox-cloud/aatrox-common-base/src/main/java/com/aatrox/apilist/validate/decimalrange/DecimalRange.java
 /Users/apple/Documents/code/aatrox-cloud/aatrox-common-base/src/main/java/com/aatrox/apilist/validate/KeywordForm.java
@@ -20,9 +22,11 @@
 /Users/apple/Documents/code/aatrox-cloud/aatrox-common-base/src/main/java/com/aatrox/apilist/validate/EmptyForm.java
 /Users/apple/Documents/code/aatrox-cloud/aatrox-common-base/src/main/java/com/aatrox/apilist/form/ResponseBaseDto.java
 /Users/apple/Documents/code/aatrox-cloud/aatrox-common-base/src/main/java/com/aatrox/apilist/validate/DataAuthForm.java
+/Users/apple/Documents/code/aatrox-cloud/aatrox-common-base/src/main/java/com/aatrox/architecture/annotation/ExceptionMessageConvert.java
 /Users/apple/Documents/code/aatrox-cloud/aatrox-common-base/src/main/java/com/aatrox/apilist/validate/idcard/IdCard.java
 /Users/apple/Documents/code/aatrox-cloud/aatrox-common-base/src/main/java/com/aatrox/model/ModelPropertyDef.java
 /Users/apple/Documents/code/aatrox-cloud/aatrox-common-base/src/main/java/com/aatrox/apilist/validate/limitword/LimitWordValidator.java
+/Users/apple/Documents/code/aatrox-cloud/aatrox-common-base/src/main/java/com/aatrox/architecture/annotation/DefaultExceptionConverter.java
 /Users/apple/Documents/code/aatrox-cloud/aatrox-common-base/src/main/java/com/aatrox/model/Pagination.java
 /Users/apple/Documents/code/aatrox-cloud/aatrox-common-base/src/main/java/com/aatrox/apilist/form/RequestResult.java
 /Users/apple/Documents/code/aatrox-cloud/aatrox-common-base/src/main/java/com/aatrox/apilist/validate/IdUnForm.java
@@ -31,8 +35,10 @@
 /Users/apple/Documents/code/aatrox-cloud/aatrox-common-base/src/main/java/com/aatrox/apilist/validate/phone/Phone.java
 /Users/apple/Documents/code/aatrox-cloud/aatrox-common-base/src/main/java/com/aatrox/apilist/complex/ComplexFeign.java
 /Users/apple/Documents/code/aatrox-cloud/aatrox-common-base/src/main/java/com/aatrox/threads/LocalRunnable.java
+/Users/apple/Documents/code/aatrox-cloud/aatrox-common-base/src/main/java/com/aatrox/architecture/annotation/ExceptionConvertPolicy.java
 /Users/apple/Documents/code/aatrox-cloud/aatrox-common-base/src/main/java/com/aatrox/apilist/validate/decimalrange/DecimalValidator.java
 /Users/apple/Documents/code/aatrox-cloud/aatrox-common-base/src/main/java/com/aatrox/apilist/validate/ComplexForm.java
 /Users/apple/Documents/code/aatrox-cloud/aatrox-common-base/src/main/java/com/aatrox/apilist/validate/OperateActionForm.java
 /Users/apple/Documents/code/aatrox-cloud/aatrox-common-base/src/main/java/com/aatrox/apilist/form/JsonCommonCodeEnum.java
+/Users/apple/Documents/code/aatrox-cloud/aatrox-common-base/src/main/java/com/aatrox/architecture/annotation/EnumToStr.java
 /Users/apple/Documents/code/aatrox-cloud/aatrox-common-base/src/main/java/com/aatrox/apilist/form/ValidationForm.java

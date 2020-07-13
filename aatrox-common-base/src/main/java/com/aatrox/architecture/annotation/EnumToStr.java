@@ -1,4 +1,4 @@
-package com.aatrox.common.annotation;
+package com.aatrox.architecture.annotation;
 
 import java.lang.annotation.*;
 
