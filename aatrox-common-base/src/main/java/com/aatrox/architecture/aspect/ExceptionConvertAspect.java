@@ -31,6 +31,9 @@ public class ExceptionConvertAspect {
             result=pjp.proceed();
         } catch (Throwable throwable) {
             throwable.printStackTrace();
+            /*MethodSignature signature = (MethodSignature) pjp.getSignature();
+            Method method = signature.getMethod();
+            ExceptionMessageConvert exceptionAnnotation = method.getAnnotation(ExceptionMessageConvert.class);*/
             Class policyClaz = convert.policy();
             String errorMsg=convert.errMsg();
             ExceptionConvertPolicy policy=null;
