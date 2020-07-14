@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 
 import java.lang.reflect.InvocationTargetException;
@@ -19,18 +20,19 @@ import java.lang.reflect.Method;
 @Aspect
 @Slf4j
 public class ExceptionConvertAspect {
-    @Around(value="@annotation(com.aatrox.architecture.annotation.ExceptionMessageConvert)")
-    public Object convert(ProceedingJoinPoint pjp){
+
+    @Pointcut("@annotation(com.aatrox.architecture.annotation.ExceptionMessageConvert)")
+    private void pointcut() {}
+
+    @Around("pointcut()&& @annotation(convert)")
+    public Object convert(ProceedingJoinPoint pjp,ExceptionMessageConvert convert){
         Object result=null;
         try {
             result=pjp.proceed();
         } catch (Throwable throwable) {
             throwable.printStackTrace();
-            MethodSignature signature = (MethodSignature) pjp.getSignature();
-            Method method = signature.getMethod();
-            ExceptionMessageConvert exceptionAnnotation = method.getAnnotation(ExceptionMessageConvert.class);
-            Class policyClaz = exceptionAnnotation.policy();
-            String errorMsg=exceptionAnnotation.errMsg();
+            Class policyClaz = convert.policy();
+            String errorMsg=convert.errMsg();
             ExceptionConvertPolicy policy=null;
             try {
                 policy=(ExceptionConvertPolicy)policyClaz.getConstructor(String.class).newInstance(errorMsg);
