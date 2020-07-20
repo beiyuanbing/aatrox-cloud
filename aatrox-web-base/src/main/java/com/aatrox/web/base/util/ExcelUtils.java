@@ -12,18 +12,9 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
-/**
- * EXCEL 配置文件 解析类
- *
- * @author:谷辉
- * @date:2012-4-13下午05:17:09
- */
 public class ExcelUtils {
     @SuppressWarnings("unused")
     private static Logger log = LoggerFactory.getLogger(ExcelUtils.class);
@@ -38,8 +29,7 @@ public class ExcelUtils {
         ExcelUtils.excelMaps = excelMaps;
     }
 
-    private final static String defaultKey         = "key";
-    private final static String defaultDescription = "description";
+    private final static String defaultDescription = "desc";
 
     private ExcelUtils() {
     }
@@ -79,7 +69,9 @@ public class ExcelUtils {
     private void getDataByXML() throws Exception {
         excelMaps = new HashMap<>();
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        InputStream inputStream =new FileInputStream( ResourceUtils.getFile("classpath:excel/excel.xml"));
+        // ClassPathResource resource = new ClassPathResource("excel/excel.xml");
+        InputStream inputStream = this.getClass().getResourceAsStream("/excel/excel.xml");
+        //InputStream inputStream = new FileInputStream(resource.getFile());
         SAXReader saxReader = new SAXReader();
         Document document = saxReader.read(inputStream);
         Element root = document.getRootElement();
@@ -88,11 +80,11 @@ public class ExcelUtils {
             Map<String, Object> resultMap = new HashMap<>();
             Element element = lst.get(i);
             //找到满足条件的节点
-            resultMap.put("sqlMapsId", element.attribute("sqlMapsId")!=null?element.attribute("sqlMapsId").getText():null);
+            resultMap.put("sqlMapsId", element.attribute("sqlMapsId") != null ? element.attribute("sqlMapsId").getText() : null);
             resultMap.put("fileName", element.attribute("fileName").getText());
-            resultMap.put("beanName", element.attribute("beanName")!=null?element.attribute("beanName").getText():null);
-            resultMap.put("methodName", element.attribute("methodName")!=null?element.attribute("methodName").getText():null);
-            resultMap.put("paramType", element.attribute("paramType")!=null?element.attribute("paramType").getText():null);
+            resultMap.put("beanName", element.attribute("beanName") != null ? element.attribute("beanName").getText() : null);
+            resultMap.put("methodName", element.attribute("methodName") != null ? element.attribute("methodName").getText() : null);
+            resultMap.put("paramType", element.attribute("paramType") != null ? element.attribute("paramType").getText() : null);
             resultMap.put("columns", getColumnByElement(element));
 
             excelMaps.put(element.attribute("id").getText(), resultMap);
@@ -110,22 +102,22 @@ public class ExcelUtils {
         //读取节点的内容
         List<Element> columnList = element.elements("column");
         List<Map<String, Object>> resultList = new ArrayList<>();
-        Map<String, Object> columns = new HashMap<>();
+        Map<String, Object> columns = new LinkedHashMap<>();
         for (int j = 0; columnList != null && j < columnList.size(); j++) {
             Element column = columnList.get(j);
             Map<String, Object> cell = new HashMap<>();
+            cell.put("key",column.attribute("key").getText());
             cell.put(column.attribute("key").getText(), column.getText() != null ? column.getText() : "");
             cell.put("width", column.attribute("width").getText());
             if (column.attribute("dataType") != null) {
                 cell.put("dataType", column.attribute("dataType").getText());
             }
-            if(column.attribute("dateFormat")!=null){
-                cell.put("dateFormat",column.attribute("dateFormat").getText());
+            if (column.attribute("dateFormat") != null) {
+                cell.put("dateFormat", column.attribute("dateFormat").getText());
             }
             if (column.attribute("enum") != null) {
                 cell.put("enum", column.attribute("enum").getText());
-                cell.put("defaultKey", column.attribute("enumKey") == null ? defaultKey : column.attribute("enumKey").getText());
-                cell.put("defaultDescription", column.attribute("enumDescription") == null ? defaultDescription : column.attribute("enumDescription").getText());
+                cell.put("enumDescription", column.attribute("enumDescription") == null ? defaultDescription : column.attribute("enumDescription").getText());
 
             }
             resultList.add(cell);

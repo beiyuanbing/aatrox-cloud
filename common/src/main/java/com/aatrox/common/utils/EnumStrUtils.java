@@ -180,19 +180,31 @@ public class EnumStrUtils {
      * @return
      */
     public static String getEnumStr(Class classz, String enumName) {
+        return getEnumStr(classz,enumName,null);
+    }
+
+    /**
+     * 获取枚举的值
+     *
+     * @param classz
+     * @param enumName
+     * @return
+     */
+    public static String getEnumStr(Class classz, String enumName,String fieldName) {
         if (classz == null || !classz.isEnum() || enumName == null || "".equals(enumName)) {
             return null;
         }
         try {
             Object o = Arrays.stream(classz.getEnumConstants()).filter(enumClasses -> enumClasses.toString().equals(enumName)).findFirst().get();
-            List<Method> methods = Arrays.stream(classz.getDeclaredMethods()).filter(method -> method.getName().contains("getDesc") || method.getName().contains("getName")).collect(Collectors.toList());
-            Method method = methods.stream().findFirst().orElse(null);
-            return method == null ? "" : method.invoke(o).toString();
+            StringBuilder stringBuilder=new StringBuilder("get");
+            if(StringUtils.isNotEmpty(fieldName)){
+                stringBuilder.append(StringUtils.firstChToUpper(fieldName));
+            }
+            List<Method> methods = Arrays.stream(classz.getDeclaredMethods()).filter(method -> method.getName().contains(stringBuilder.toString())).collect(Collectors.toList());
+            return methods.stream().findFirst().get().invoke(o).toString();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
-
     }
-
 }

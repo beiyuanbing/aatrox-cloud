@@ -239,6 +239,11 @@ public class StringUtils extends org.springframework.util.StringUtils {
         }
     }
 
+    public static String firstChToUpper(String str){
+        if(isEmpty(str)){return str;}
+        return (str.charAt(0)+"").toUpperCase()+str.substring(1);
+    }
+
     public static void main(String[] args) {
 
 
