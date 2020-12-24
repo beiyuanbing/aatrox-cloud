@@ -645,4 +645,27 @@ public class ReflectionUtils {
         System.out.println(type);
         System.out.println(isBaseType(field));*/
     }
+
+    /**
+     * 类型                 int        二进制
+     *
+     * PUBLIC:           1             1
+     * PRIVATE:         2             10
+     * PROTECTED: 4              100
+     * STATIC:           8              1000
+     * FINAL:           16             10000
+     * SYNCHRONIZED: 32     100000
+     * VOLATILE: 64                 1000000
+     * TRANSIENT: 128            10000000
+     * NATIVE: 256                    100000000
+     * INTERFACE: 512             1000000000
+     * ABSTRACT: 1024            10000000000
+     * STRICT: 2048                  100000000000
+     * @param field
+     * @return
+     */
+    //判断是不是private类型方法
+    public static boolean isTransient(Field field) {
+        return ((field.getModifiers() & 0x80) != 0);
+    }
 }

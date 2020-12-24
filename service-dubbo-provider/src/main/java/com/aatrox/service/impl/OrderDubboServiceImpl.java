@@ -16,11 +16,10 @@ public class OrderDubboServiceImpl implements OrderDubboService {
 
     @Override
     public OrderInfo getOrderInfo(Integer id) {
-//        OrderInfoModel orderInfoModel = orderFegin.selectByPrimaryKey(Integer.valueOf(1));
-//        OrderInfo orderInfo = new OrderInfo();
-//        System.out.println("123");
-//        ReflectionUtils.copyProperties(orderInfo, orderInfoModel);
-//        return orderInfo;
-        return null;
+        OrderInfoModel orderInfoModel = orderFegin.selectById(Integer.valueOf(1));
+        OrderInfo orderInfo = new OrderInfo();
+        System.out.println("123");
+        ReflectionUtils.copyProperties(orderInfo, orderInfoModel);
+        return orderInfo;
     }
 }

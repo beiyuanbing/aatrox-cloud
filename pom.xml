@@ -60,6 +60,7 @@
         <module>services/order/order-api-list</module>
         <!--web层-->
         <module>web</module>
+        <module>test-web</module>
 
     </modules>
 

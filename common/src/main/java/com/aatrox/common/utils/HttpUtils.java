@@ -824,8 +824,8 @@ public class HttpUtils {
     }
 
     public static void main(String[] args) throws Exception {
-        HttpResponse httpResponse = doGet("https://www.baidu.com/s?wd=刘奕宁", null);
-        System.out.println("Result:" + httpResponse.getEntity());
+        String s = get("https://ss11111.com/s?wd=刘奕宁", true);
+        System.out.println("Result:" + s);
     }
 
     static class HttpDeleteWithBody extends HttpEntityEnclosingRequestBase {
