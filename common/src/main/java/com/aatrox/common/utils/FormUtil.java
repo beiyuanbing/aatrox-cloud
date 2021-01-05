@@ -56,7 +56,6 @@ public class FormUtil {
                                 } else if (genericType instanceof TypeVariable) {
                                     //TypeVariable: 是各种类型变量的公共父接口
                                 } else {
-                                    Class clz = Class.forName(genericType.getTypeName());
                                     //if (isExtends(clz, OperateForm.class)) {
                                     fillFormPropery(field.get(object), currentPerson, overwrite);
                                     // }
@@ -118,9 +117,7 @@ public class FormUtil {
         Method m = object.getClass().getDeclaredMethod("size");
         int size = (Integer) m.invoke(object);
         for (int i = 0; i < size; i++) {
-            //可能list包含了多个对象，因为加上这个进行递归调用
-            fillForm(((List) object).get(i), currentPerson);
-            //fillFormPropery(((List) object).get(i), currentPerson);
+            fillFormPropery(((List) object).get(i), currentPerson);
         }
     }
 
@@ -135,5 +132,8 @@ public class FormUtil {
         /*if(insertForm instanceof OperateForm){
             System.out.println("yes");
         }*/
+
+
     }
+
 }
