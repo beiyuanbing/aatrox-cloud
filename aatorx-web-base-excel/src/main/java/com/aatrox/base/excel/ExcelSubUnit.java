@@ -1,39 +1,41 @@
-package com.aatrox.web.base.controller;
+package com.aatrox.base.excel;
 
+import com.aatrox.base.excel.kernel.ExportExcelService;
+import com.aatrox.base.excel.utils.ExcelExportUtil;
+import com.aatrox.base.excel.utils.ExcelUtils;
 import com.aatrox.common.utils.DateUtil;
 import com.aatrox.common.utils.EnumStrUtils;
 import com.aatrox.common.utils.ListUtil;
-import com.aatrox.web.base.service.ExportExcelService;
-import com.aatrox.web.base.util.ExcelUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.*;
+import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.OutputStream;
 import java.math.BigDecimal;
+import java.net.URLEncoder;
 import java.util.*;
 import java.util.stream.Stream;
 
 /**
  * @author aatrox
- * @desc 导出的controller类, 方便进行导出
- * @date 2019/9/2
+ * @desc
+ * @date 2020/12/29
  */
-public class ExcelController extends BaseController {
-    @Resource
-    private ExportExcelService exportExcelService;
-
-    private HSSFWorkbook workbook = null;
-
+@Component
+public class ExcelSubUnit {
     /**
      * 默认的sheetName
      **/
     private static final String DEFAULT_SHEET_NAME = "sheet0";
+    @Resource
+    private ExportExcelService exportExcelService;
+    private HSSFWorkbook workbook = null;
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     public void excelExport(String key, Object params, HttpServletResponse response) throws Exception {
@@ -83,6 +85,71 @@ public class ExcelController extends BaseController {
             handleData(template, contentList);
         }
         outputExcel(workbook, response, fileName);
+    }
+
+    /**
+     * 传递个class类
+     * @param claz
+     * @param contentList
+     * @param response
+     * @throws Exception
+     */
+    public void excelExport(Class claz, List contentList, HttpServletResponse response) throws Exception {
+        Map<String, Object> excelMap = this.getExcelMap(claz);
+        String fileName = "数据导出";
+        workbook = new HSSFWorkbook();
+        if (excelMap != null) {
+            //方法名
+            fileName = (String) excelMap.get("fileName");
+            List<Map<String, Object>> template = (List<Map<String, Object>>) excelMap.get("columns");
+            handleData(template, contentList);
+        }
+        outputExcel(workbook, response, fileName);
+    }
+
+    /**
+     * 传递个class类
+     * @param claz
+     * @param contentList
+     * @param ignoreFieldList 忽略的字段
+     * @param response
+     * @throws Exception
+     */
+    public void excelExport(Class claz, List contentList,List<String> ignoreFieldList,HttpServletResponse response) throws Exception {
+        Map<String, Object> excelMap = this.getExcelMap(claz, Optional.ofNullable(ignoreFieldList).orElse(new ArrayList<>()));
+        String fileName = "数据导出";
+        workbook = new HSSFWorkbook();
+        if (excelMap != null) {
+            //方法名
+            fileName = (String) excelMap.get("fileName");
+            List<Map<String, Object>> template = (List<Map<String, Object>>) excelMap.get("columns");
+            handleData(template, contentList);
+        }
+        outputExcel(workbook, response, fileName);
+    }
+
+    public synchronized Map<String,Object> getExcelMap(Class claz)throws Exception{
+        return this.getExcelMap(claz,new ArrayList<>());
+
+    }
+
+    /**
+     * 增加忽略字段的设置
+     * @param claz
+     * @param ignoreFieldList
+     * @return
+     * @throws Exception
+     */
+    public synchronized Map<String,Object> getExcelMap(Class claz,List<String> ignoreFieldList)throws Exception{
+        Map<String, Object> excelMap = ExcelUtils.getConfigById(claz.getName());
+        if(excelMap==null) {
+            ExcelExportUtil excelExportUtil = new ExcelExportUtil().setFullClassPathKey(true).setIgnoreFieldList(ignoreFieldList);
+            Map<String, Object> templateMap = excelExportUtil.getTemplateMap(claz);
+            ExcelUtils.addAllConfigMap(templateMap);
+        }
+        excelMap = ExcelUtils.getConfigById(claz.getName());
+        return excelMap;
+
     }
 
     /**
@@ -181,8 +248,9 @@ public class ExcelController extends BaseController {
             response.setHeader("Content-disposition", "attachment; filename = " + "电子表格.xls" + "");
         } else {
             fileName = fileName + ".xls";
-            response.setHeader("Content-disposition", "attachment; filename = " + new String(fileName.getBytes(
-                    "GB2312"), "ISO8859_1") + "");
+            //response.setHeader("Content-disposition", "attachment; filename = " + new String(fileName.getBytes(
+            //      "GB2312"), "ISO8859_1") + "");
+            response.setHeader("Content-disposition", "attachment; filename = " + URLEncoder.encode(fileName, "UTF-8"));
         }
         response.setContentType("application/octet-stream;charset=UTF-8");
         OutputStream stream = response.getOutputStream();
@@ -213,7 +281,7 @@ public class ExcelController extends BaseController {
             String methodName = (String) excelMap.get("methodName");
             String paramType = (String) excelMap.get("paramType");
             Class<?> aClass = null;
-            if (org.apache.commons.lang.StringUtils.isNotEmpty(paramType)) {
+            if (StringUtils.isNotEmpty(paramType)) {
                 aClass = Class.forName(paramType);
             }
             //如果使用getListBySqlMapsId,进行查询mybatis的mapper.xml的数据库方法，因此将此方法改成通用就变成如此了
@@ -231,7 +299,7 @@ public class ExcelController extends BaseController {
      * @return
      */
     private String getFileName(boolean fileNameDateEnd, String fileName) {
-        if (fileNameDateEnd && org.apache.commons.lang.StringUtils.isNotEmpty(fileName)) {
+        if (fileNameDateEnd && StringUtils.isNotEmpty(fileName)) {
             fileName += "--" + DateUtil.format(new Date(), DateUtil.DEFAULT_DATE_MINUTE_1);
         }
         return fileName;
@@ -245,7 +313,7 @@ public class ExcelController extends BaseController {
      * @param contentList
      */
     private void handleData(List<Map<String, Object>> template, List contentList, String sheetName) {
-        HSSFSheet sheet = workbook.createSheet(org.apache.commons.lang.StringUtils.isNotEmpty(sheetName) ? sheetName : DEFAULT_SHEET_NAME);
+        HSSFSheet sheet = workbook.createSheet(StringUtils.isNotEmpty(sheetName) ? sheetName : DEFAULT_SHEET_NAME);
         createHeader(sheet, template);
         if (ListUtil.isEmpty(contentList)) {
             return;
@@ -287,7 +355,7 @@ public class ExcelController extends BaseController {
         HSSFRow row = sheet.createRow(0);
         short index = 0;
         for (Map<String, Object> column : list) {
-            String key =this.getKey(column);
+            String key = this.getKey(column);
             HSSFCell cell = row.createCell(index);
             cell.setCellValue((String) column.get(key));
             sheet.setColumnWidth(index, column.get("width") == null ? 200 : new BigDecimal((String) column.get("width"
@@ -372,7 +440,7 @@ public class ExcelController extends BaseController {
         String objectStr = null;
         //日期的特别处理
         if (dataType.equals("date")) {
-            dateFormat = StringUtils.isEmpty(dateFormat) ? DateUtil.DEFAULT_FORMATE : dateFormat;
+            dateFormat = StringUtils.isEmpty(dateFormat) ? DateUtil.DEFAULT_DATEIME : dateFormat;
             objectStr = DateUtil.format(object.getDate(key), dateFormat);
             if (objectStr == null || objectStr.equals("") || objectStr.equals("{}")) {
                 objectStr = "";
@@ -400,11 +468,12 @@ public class ExcelController extends BaseController {
 
     /**
      * 获取从excel过来的key值处理
+     *
      * @param column
      * @return
      */
     private String getKey(Map<String, Object> column) {
-        return  (String) column.get("key");
+        return (String) column.get("key");
     }
 
     /**
@@ -422,6 +491,7 @@ public class ExcelController extends BaseController {
 
     /**
      * 获取枚举类型的值
+     *
      * @param c
      * @param value
      * @param enumDescription
@@ -437,19 +507,4 @@ public class ExcelController extends BaseController {
         description = EnumStrUtils.getEnumStr(c, value, enumDescription);
         return description;
     }
-
-    public HSSFWorkbook getWorkbook() {
-        return workbook;
-    }
-
-    public void setWorkbook(HSSFWorkbook workbook) {
-        this.workbook = workbook;
-    }
-
-    private static Map<String, Object> excelMaps = null;
-
-    public static Map<String, Object> getExcelMaps() {
-        return excelMaps;
-    }
-
 }

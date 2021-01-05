@@ -32,7 +32,7 @@ public abstract class BasePayRequest<T extends WxPayBaseResponse> extends WxPayB
         this.out_trade_no = out_trade_no;
         this.body = body;
         this.total_fee = (int) MathUtil.doubleMul(price, 100);
-        this.time_expire = DateUtil.getDateString(empireTime, "yyyyMMddHHmmss");
+        this.time_expire = DateUtil.format(empireTime, "yyyyMMddHHmmss");
         this.spbill_create_ip = spbill_create_ip;
         this.notify_url = url;
     }

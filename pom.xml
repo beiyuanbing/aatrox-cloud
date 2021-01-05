@@ -61,6 +61,7 @@
         <!--web层-->
         <module>web</module>
         <module>test-web</module>
+        <module>aatorx-web-base-excel</module>
 
     </modules>
 

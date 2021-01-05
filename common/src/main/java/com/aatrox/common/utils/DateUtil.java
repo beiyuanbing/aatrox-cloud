@@ -16,23 +16,24 @@ import java.util.Date;
 public class DateUtil {
     public static final String formate_string_yyyyMMdd = "yyyyMMdd";
 
-    public static final String formate_yyyyMMddhhmmss = "yyyyMMddHHmmss";
+    public static final String DEFAULT_DATE_MINUTE_1 = "yyyyMMddHHmmss";
 
     public static final String formate_string_hhmmss = "HHmmss";
     public static final String DEFAULT_FORMATE = "yyyy-MM-dd HH:mm:ss";
+    public static final String DEFAULT_DATEIME = "yyyy-MM-dd HH:mm:ss";
     public static final String DEFAULT_DATE_FORMATE = "yyyy-MM-dd";
     public static final String FMT_SOLR ="yyyy-MM-dd'T'HH:mm:ss'Z'" ;
 
-    public static String getDateString(Date d, String format) {
+    public static String format(Date d, String format) {
         DateFormat df = new SimpleDateFormat(format);
         return df.format(d==null?new Date():d);
     }
 
-    public static String getDateString(Date d) {
+    public static String format(Date d) {
         if(d==null){
             return null;
         }
-        return getDateString(d,DEFAULT_FORMATE);
+        return format(d,DEFAULT_FORMATE);
     }
 
     public static Date converStringToDate(String dateStr, String format) {
@@ -79,7 +80,7 @@ public class DateUtil {
     }
 
     public static void main(String[] args) {
-        System.out.println(getDateString(getStartDate(new Date())));
-        System.out.println(getDateString(getEndDate(new Date())));
+        System.out.println(format(getStartDate(new Date())));
+        System.out.println(format(getEndDate(new Date())));
     }
 }

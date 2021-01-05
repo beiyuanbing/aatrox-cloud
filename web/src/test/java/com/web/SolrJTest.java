@@ -31,7 +31,7 @@ public class SolrJTest {
         document.addField("id", "8888");
         document.addField("item_title", "测试爬虫数据3");
         document.addField("item_origin", "http://www.baidu.com");
-        document.addField("item_createTime", DateUtil.getDateString(new Date(), DateUtil.FMT_SOLR));
+        document.addField("item_createTime", DateUtil.format(new Date(), DateUtil.FMT_SOLR));
         // 把文档对象写入索引库
         solrServer.add(document);
         // 提交
@@ -82,8 +82,8 @@ public class SolrJTest {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         Date dateStrart = DateUtil.getStartDate(new Date());
         Date dateEnd = DateUtil.getEndDate(new Date());
-        String start = DateUtil.getDateString(dateStrart, DateUtil.FMT_SOLR);
-        String end = DateUtil.getDateString(dateEnd, DateUtil.FMT_SOLR);
+        String start = DateUtil.format(dateStrart, DateUtil.FMT_SOLR);
+        String end = DateUtil.format(dateEnd, DateUtil.FMT_SOLR);
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("item_createTime" + ":[" + start + " TO " + end + " ] ");
         query.setQuery(stringBuilder.toString());
