@@ -1,5 +1,8 @@
 package com.aatrox.base.excel;
 
+import com.aatrox.base.excel.dto.ExcelClazDto;
+import com.aatrox.base.excel.dto.ExcelDataDto;
+import com.aatrox.base.excel.dto.ExcelRelationDto;
 import com.aatrox.base.excel.kernel.ExportExcelService;
 import com.aatrox.base.excel.utils.ExcelExportUtil;
 import com.aatrox.base.excel.utils.ExcelUtils;
@@ -9,7 +12,7 @@ import com.aatrox.common.utils.ListUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.*;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -29,120 +32,89 @@ import java.util.stream.Stream;
  */
 @Component
 public class ExcelSubUnit {
+
     /**
      * 默认的sheetName
      **/
     private static final String DEFAULT_SHEET_NAME = "sheet0";
+
+    private HSSFWorkbook workbook = null;
     @Resource
     private ExportExcelService exportExcelService;
-    private HSSFWorkbook workbook = null;
-
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    public void excelExport(String key, Object params, HttpServletResponse response) throws Exception {
-        excelExport(key, false, params, response);
-    }
 
     /**
      * 简单的导出
      *
-     * @param key
-     * @param fileNameDateEnd
-     * @param params
+     * @param dto
      * @param response
      * @throws Exception
      */
-    public void excelExport(String key, boolean fileNameDateEnd, Object params, HttpServletResponse response) throws Exception {
+    public void excelExportRelationModel(ExcelRelationDto dto, HttpServletResponse response) throws Exception {
         workbook = new HSSFWorkbook();
-        this.excelExport(workbook, key, fileNameDateEnd, params, response);
+        this.excelExportRelationModel(workbook, dto, response);
     }
 
     /**
      * 自定义workBook
      *
      * @param workbook
-     * @param key
-     * @param fileNameDateEnd
-     * @param params
+     * @param dto
      * @param response
      * @throws Exception
      */
-    public void excelExport(HSSFWorkbook workbook, String key, boolean fileNameDateEnd, Object params,
-                            HttpServletResponse response) throws Exception {
+    private void excelExportRelationModel(HSSFWorkbook workbook,ExcelRelationDto dto,
+                                          HttpServletResponse response) throws Exception {
         String fileName = "";
-        fileName = handleExcelKernel(key, params, fileName, false);
-        fileName = this.getFileName(fileNameDateEnd, fileName);
+        fileName = handleExcelKernel(dto.getTagKeyId(),dto.getQueryObject(), fileName, false);
+        fileName = this.getFileName(dto.isFileNameDateEnd(), fileName);
         outputExcel(workbook, response, fileName);
     }
 
-    public void excelExport(String key, List contentList, HttpServletResponse response) throws Exception {
-        Map<String, Object> excelMap = ExcelUtils.getConfigById(key);
+    public void excelExportDataModel(ExcelDataDto dto, HttpServletResponse response) throws Exception {
+        Map<String, Object> excelMap = ExcelUtils.getConfigById(dto.getTagKeyId());
         String fileName = "";
         workbook = new HSSFWorkbook();
         if (excelMap != null) {
             //方法名
             fileName = (String) excelMap.get("fileName");
             List<Map<String, Object>> template = (List<Map<String, Object>>) excelMap.get("columns");
-            handleData(template, contentList);
+            handleData(template, dto.getDataList());
         }
         outputExcel(workbook, response, fileName);
     }
 
     /**
      * 传递个class类
-     * @param claz
-     * @param contentList
+     *
+     * @param dto
      * @param response
      * @throws Exception
      */
-    public void excelExport(Class claz, List contentList, HttpServletResponse response) throws Exception {
-        Map<String, Object> excelMap = this.getExcelMap(claz);
+    public void excelExportClassMode(ExcelClazDto dto, HttpServletResponse response) throws Exception {
+        Map<String, Object> excelMap = this.getExcelMap(dto.getClaz(), Optional.ofNullable(dto.getIgnoreFieldList()).orElse(new ArrayList<>()));
         String fileName = "数据导出";
         workbook = new HSSFWorkbook();
         if (excelMap != null) {
             //方法名
             fileName = (String) excelMap.get("fileName");
             List<Map<String, Object>> template = (List<Map<String, Object>>) excelMap.get("columns");
-            handleData(template, contentList);
+            handleData(template, dto.getDataList());
         }
         outputExcel(workbook, response, fileName);
     }
 
-    /**
-     * 传递个class类
-     * @param claz
-     * @param contentList
-     * @param ignoreFieldList 忽略的字段
-     * @param response
-     * @throws Exception
-     */
-    public void excelExport(Class claz, List contentList,List<String> ignoreFieldList,HttpServletResponse response) throws Exception {
-        Map<String, Object> excelMap = this.getExcelMap(claz, Optional.ofNullable(ignoreFieldList).orElse(new ArrayList<>()));
-        String fileName = "数据导出";
-        workbook = new HSSFWorkbook();
-        if (excelMap != null) {
-            //方法名
-            fileName = (String) excelMap.get("fileName");
-            List<Map<String, Object>> template = (List<Map<String, Object>>) excelMap.get("columns");
-            handleData(template, contentList);
-        }
-        outputExcel(workbook, response, fileName);
-    }
-
-    public synchronized Map<String,Object> getExcelMap(Class claz)throws Exception{
-        return this.getExcelMap(claz,new ArrayList<>());
-
-    }
 
     /**
      * 增加忽略字段的设置
+     *
      * @param claz
      * @param ignoreFieldList
      * @return
      * @throws Exception
      */
-    public synchronized Map<String,Object> getExcelMap(Class claz,List<String> ignoreFieldList)throws Exception{
+    public synchronized Map<String, Object> getExcelMap(Class claz, List<String> ignoreFieldList) throws Exception {
         Map<String, Object> excelMap = ExcelUtils.getConfigById(claz.getName());
-        if(excelMap==null) {
+        if (excelMap == null) {
             ExcelExportUtil excelExportUtil = new ExcelExportUtil().setFullClassPathKey(true).setIgnoreFieldList(ignoreFieldList);
             Map<String, Object> templateMap = excelExportUtil.getTemplateMap(claz);
             ExcelUtils.addAllConfigMap(templateMap);
@@ -157,14 +129,13 @@ public class ExcelSubUnit {
      *
      * @param response
      * @param fileName
-     * @param keyList
-     * @param dataList
+     * @param relationDtoList
      * @throws Exception
      */
-    public void multiSheetsExport(HttpServletResponse response, String fileName, List<String> keyList,
-                                  List<List> dataList) throws Exception {
-        this.multiSheetsExport(response, fileName, false, keyList, dataList);
+    public void multiSheetsExportDataModel(String fileName, List<ExcelDataDto> relationDtoList, HttpServletResponse response) throws Exception {
+        this.multiSheetsExportDataModel( fileName, false, relationDtoList,response);
     }
+
 
     /**
      * 此处提供数据，不用做二次查询的数据导出
@@ -172,21 +143,19 @@ public class ExcelSubUnit {
      * @param response
      * @param fileName
      * @param fileNameDateEnd
-     * @param keyList
-     * @param dataList
+     * @param relationDtoList
      * @throws Exception
      */
-    public void multiSheetsExport(HttpServletResponse response, String fileName, boolean fileNameDateEnd,
-                                  List<String> keyList, List<List> dataList) throws Exception {
+    public void multiSheetsExportDataModel(String fileName, boolean fileNameDateEnd, List<ExcelDataDto> relationDtoList, HttpServletResponse response) throws Exception {
         workbook = new HSSFWorkbook();
-        Assert.notEmpty(keyList, "keyList不允许为空");
-        Stream.iterate(0, i -> i + 1).limit(keyList.size()).forEach(i -> {
+        Assert.notEmpty(relationDtoList, "relationDtoList不允许为空");
+        relationDtoList.stream().forEach(item->{
             try {
-                Map<String, Object> excelMap = ExcelUtils.getConfigById(keyList.get(i));
+                Map<String, Object> excelMap = ExcelUtils.getConfigById(item.getTagKeyId());
                 Assert.notNull(excelMap, "跳出这层不处理这个key");
                 String sheetName = (String) excelMap.get("fileName");
                 List<Map<String, Object>> template = (List<Map<String, Object>>) excelMap.get("columns");
-                handleData(template, dataList.get(i), sheetName);
+                handleData(template, item.getDataList(), sheetName);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -197,43 +166,40 @@ public class ExcelSubUnit {
 
     }
 
-    /**
-     * 多文件导出，一定要指定文件名
-     *
-     * @param response
-     * @param fileName
-     * @param paramsObject
-     * @param keysList
-     * @throws Exception
-     */
-    public void multiSheetsExport(String fileName, Object paramsObject, List<String> keysList,
-                                  HttpServletResponse response) throws Exception {
-        this.multiSheetsExport(fileName, false, paramsObject, keysList, response);
+
+    public void multiSheetsExportClazModel(String fileName, List<ExcelClazDto> clazRelationDtoList, HttpServletResponse response) throws Exception {
+        this.multiSheetsExportClazModel( fileName, false, clazRelationDtoList,response);
     }
 
     /**
-     * 多sheet单excel导出操作
+     * 此处提供数据，不用做二次查询的数据导出
      *
      * @param response
      * @param fileName
      * @param fileNameDateEnd
-     * @param paramsObject
-     * @param keysList
+     * @param clazRelationDtoList
      * @throws Exception
      */
-    public void multiSheetsExport(String fileName, boolean fileNameDateEnd, Object paramsObject,
-                                  List<String> keysList, HttpServletResponse response) throws Exception {
+    public void multiSheetsExportClazModel(String fileName, boolean fileNameDateEnd, List<ExcelClazDto> clazRelationDtoList, HttpServletResponse response) throws Exception {
         workbook = new HSSFWorkbook();
-        Assert.notEmpty(keysList, "keysList不允许为空");
-        for (String key : keysList) {
-            //此处是处理核心
-            handleExcelKernel(key, paramsObject, fileName, true);
-        }
+        Assert.notEmpty(clazRelationDtoList, "clazRelationDtoList 不允许为空");
+        clazRelationDtoList.stream().forEach(item->{
+            try {
+                Map<String, Object> excelMap = this.getExcelMap(item.getClaz(), Optional.ofNullable(item.getIgnoreFieldList()).orElse(new ArrayList<>()));
+                Assert.notNull(excelMap, "跳出这层不处理这个key");
+                String sheetName = (String) excelMap.get("fileName");
+                List<Map<String, Object>> template = (List<Map<String, Object>>) excelMap.get("columns");
+                handleData(template, item.getDataList(), sheetName);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
         fileName = this.getFileName(fileNameDateEnd, fileName);
         //导出excel
         outputExcel(workbook, response, fileName);
-
     }
+
+
 
     /**
      * 导出
@@ -281,7 +247,7 @@ public class ExcelSubUnit {
             String methodName = (String) excelMap.get("methodName");
             String paramType = (String) excelMap.get("paramType");
             Class<?> aClass = null;
-            if (StringUtils.isNotEmpty(paramType)) {
+            if (org.apache.commons.lang3.StringUtils.isNotEmpty(paramType)) {
                 aClass = Class.forName(paramType);
             }
             //如果使用getListBySqlMapsId,进行查询mybatis的mapper.xml的数据库方法，因此将此方法改成通用就变成如此了
@@ -299,7 +265,7 @@ public class ExcelSubUnit {
      * @return
      */
     private String getFileName(boolean fileNameDateEnd, String fileName) {
-        if (fileNameDateEnd && StringUtils.isNotEmpty(fileName)) {
+        if (fileNameDateEnd && org.apache.commons.lang3.StringUtils.isNotEmpty(fileName)) {
             fileName += "--" + DateUtil.format(new Date(), DateUtil.DEFAULT_DATE_MINUTE_1);
         }
         return fileName;
@@ -313,7 +279,7 @@ public class ExcelSubUnit {
      * @param contentList
      */
     private void handleData(List<Map<String, Object>> template, List contentList, String sheetName) {
-        HSSFSheet sheet = workbook.createSheet(StringUtils.isNotEmpty(sheetName) ? sheetName : DEFAULT_SHEET_NAME);
+        HSSFSheet sheet = workbook.createSheet(org.apache.commons.lang3.StringUtils.isNotEmpty(sheetName) ? sheetName : DEFAULT_SHEET_NAME);
         createHeader(sheet, template);
         if (ListUtil.isEmpty(contentList)) {
             return;
