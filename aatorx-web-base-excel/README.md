@@ -22,7 +22,8 @@
 
 ## excel 导出数据
 
-###自动调用模式
+### 自动调用模式
+
 参考在resource文件目录下建立excel/excel.xml的文件
 ```
 <?xml version="1.0" encoding="UTF-8"?>
@@ -70,8 +71,8 @@
     </excel>
 </excel>
 ```
-####单个sheet的excel文件导出
-######1.自动调用模式的使用例子
+#### 单个sheet的excel文件导出
+###### 1.自动调用模式的使用例子
 ```        
 ExcelRelationDto relationDto = new ExcelRelationDto()
                 //在excel文件配置的key
@@ -83,7 +84,7 @@ ExcelRelationDto relationDto = new ExcelRelationDto()
         //excel.xml对应的自动调用bean方法查询数据时候使用
 excelSubUnit.excelExportRelationModel(relationDto,httpServletResponse);
 ```
-######2.自行查询数据集合进行导出
+###### 2.自行查询数据集合进行导出
 ```
         ExcelDataDto excelDataDto = new ExcelDataDto()
                                         //在excel文件配置的key
@@ -95,9 +96,8 @@ excelSubUnit.excelExportRelationModel(relationDto,httpServletResponse);
         //不使用自动调用bean的模式，直接传数据集合进行导出
         excelSubUnit.excelExportDataModel(excelDataDto,httpServletResponse);
 ```
-######3.实体对象利用对应类的swagger参数作为导出模版
-
-实体结构
+###### 3.实体对象利用对应类的swagger参数作为导出模版
+###### 实体结构
 ```
 @ApiModel(description = "demo class")
 public class DemoModel {
@@ -123,7 +123,7 @@ public class DemoModel {
     @JsonFormat(pattern="yyyy-MM-dd")
     private Date createTime;
 ```
-导出的api调用
+###### 导出的api调用
 ```
 ExcelClazDto<DemoModel> excelClazDto = new ExcelClazDto<DemoModel>()
                                                             //claz为excel对应的转换体
@@ -134,9 +134,9 @@ ExcelClazDto<DemoModel> excelClazDto = new ExcelClazDto<DemoModel>()
 excelSubUnit.excelExportClassMode(excelClazDto,httpServletResponse);
 ```
 
+### 多sheet的excel文件导出
 
-####多sheet的excel文件导出
-#####1.根据excel标签的key和数据集合进行导出多Sheet导出
+##### 1.根据excel标签的key和数据集合进行导出多Sheet导出
 ```
  ExcelDataDto excelDataDto1 = new ExcelDataDto()
                 //在excel文件配置的key
@@ -156,7 +156,7 @@ ExcelDataDto excelDataDto2 = new ExcelDataDto()
 List<ExcelDataDto> dataDtoList = Arrays.asList(excelDataDto1,excelDataDto2);
 excelSubUnit.multiSheetsExportDataModel(fileName,true,dataDtoList,httpServletResponse);
 ```
-#####2.根据实体对象的swagger参数和数据集合进行导出多Sheet导出
+##### 2.根据实体对象的swagger参数和数据集合进行导出多Sheet导出
 ```
 DemoModel demoModel = new DemoModel();
 SheetModel sheetModel=new SheetModel();
