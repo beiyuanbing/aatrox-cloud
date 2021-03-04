@@ -1,12 +1,13 @@
 package com.aatrox.common.utils;
 
-import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang.Validate;
 import org.springframework.cglib.beans.BeanGenerator;
 import org.springframework.cglib.beans.BeanMap;
 
 import java.lang.annotation.*;
 import java.lang.reflect.*;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -17,6 +18,7 @@ import java.util.stream.Stream;
 public class ReflectionUtils {
 
     private static final String BASE_MODULE = "java.base";
+
     /**
      * 直接设置对象属性值, 忽略 private/protected 修饰符
      *
@@ -42,6 +44,7 @@ public class ReflectionUtils {
             if (!overwrite && field.get(object) != null) {
                 return;
             }
+
             //将 object 中 field 所代表的值 设置为 value
             field.set(object, value);
         } catch (Exception e) {
@@ -86,6 +89,31 @@ public class ReflectionUtils {
     }
 
     /**
+     * 类型                 int        二进制
+     * <p>
+     * PUBLIC:           1             1
+     * PRIVATE:         2             10
+     * PROTECTED: 4              100
+     * STATIC:           8              1000
+     * FINAL:           16             10000
+     * SYNCHRONIZED: 32     100000
+     * VOLATILE: 64                 1000000
+     * TRANSIENT: 128            10000000
+     * NATIVE: 256                    100000000
+     * INTERFACE: 512             1000000000
+     * ABSTRACT: 1024            10000000000
+     * STRICT: 2048                  100000000000
+     *
+     * @param field
+     * @return
+     */
+    //判断是不是private类型方法
+    public static boolean isTransient(Field field) {
+        return ((field.getModifiers() & 0x80) != 0);
+    }
+
+
+    /**
      * 获取所有的方法
      *
      * @param object
@@ -98,21 +126,6 @@ public class ReflectionUtils {
         return getDeclareMethods(object.getClass());
     }
 
-    public static Method getDeclareMethod(Object object,String methodName){
-        if (object == null) {
-            return null;
-        }
-        return getDeclareMethod(object.getClass(),methodName);
-    }
-
-    public static Method getDeclareMethod(Class claz,String methodName) {
-        List<Method> methodList = getDeclareMethods(claz);
-        if(ListUtil.isEmpty(methodList)){return null;}
-        Method method=null;
-        method=methodList.stream().filter(x->x.getName().equalsIgnoreCase(methodName)).findFirst().orElse(null);
-        return method;
-    }
-
     public static List<Method> getDeclareMethods(Class claz) {
         Method[] methods = claz.getDeclaredMethods();
         if (methods == null) {
@@ -120,6 +133,7 @@ public class ReflectionUtils {
         }
         return Arrays.asList(methods);
     }
+
     /**
      * 设置对象的属性，一个值填充多个值域
      *
@@ -247,24 +261,39 @@ public class ReflectionUtils {
      * 最简洁的判断是不是java的baseType
      * 判断是不是基础模块？
      * 只是适用于jdk为9以上的版本，jdk9以下(不包含)建议使用下面注释的版本
-     * @param className
+     *
+     * @param aClass
      * @return
      */
-  /*  public static boolean isBaseType(Class aClass) {
+    public static boolean isBaseType(Class aClass) {
         if (aClass == null) {
             return false;
         }
         return BASE_MODULE.equals(aClass.getModule().getName());
-    }*/
-    public static boolean isBaseType(Class className) {
-        return className.isPrimitive() ||
-                Number.class.isAssignableFrom(className) ||
-                CharSequence.class.isAssignableFrom(className) ||
-                Map.class.isAssignableFrom(className) ||
-                className.equals(Boolean.class)||
-                className.equals(Character.class) ||
-                className.equals(Date.class);
     }
+    /*public static boolean isBaseType(Class className) {
+        if (className.equals(java.lang.Integer.class) ||
+                className.equals(java.lang.Byte.class) ||
+                className.equals(java.lang.Long.class) ||
+                className.equals(java.lang.Double.class) ||
+                className.equals(java.lang.Float.class) ||
+                className.equals(java.lang.Character.class) ||
+                className.equals(java.lang.Short.class) ||
+                className.equals(java.lang.Boolean.class) ||
+                className.equals(java.lang.String.class) ||
+                className.equals(java.util.Date.class) ||
+                className.equals(int.class) ||
+                className.equals(byte.class) ||
+                className.equals(long.class) ||
+                className.equals(double.class) ||
+                className.equals(float.class) ||
+                className.equals(char.class) ||
+                className.equals(short.class) ||
+                className.equals(boolean.class)) {
+            return true;
+        }
+        return false;
+    }*/
 
     /**
      * 是否是TypeVariable: 是各种类型变量的公共父接口
@@ -282,6 +311,7 @@ public class ReflectionUtils {
         }
         return false;
     }
+
     /**
      * 循环向上转型, 获取所有的字段包括父类的对象
      *
@@ -326,11 +356,11 @@ public class ReflectionUtils {
     }
 
 
-
     /**
      * 循环向上转型, 获取对应的方法
-     * @param object : 对象
-     * @param methodName : 方法名
+     *
+     * @param object         : 对象
+     * @param methodName     : 方法名
      * @param parameterTypes : 方法参数类型
      * @return 方法对象
      */
@@ -360,8 +390,10 @@ public class ReflectionUtils {
     public static void copyProperties(Object target, Object source) {
         copyProperties(target, source, true);
     }
+
     /**
      * 对象增加新的栏位并返回对应的clig的对象,并设置对应的值
+     *
      * @param superClasz
      * @param property
      * @param type
@@ -373,6 +405,7 @@ public class ReflectionUtils {
         setValue(obj, property, value);
         return obj;
     }
+
     /***
      * 对象增加新的栏位并返回对应的clig的对象
      * @param superClasz
@@ -412,6 +445,18 @@ public class ReflectionUtils {
      * @return
      */
     public static Object addObjectPropertys(Object source, List<String> propertyList, List<Object> valueList, Class common) {
+        return addObjectPropertys(source,propertyList,valueList,common,true);
+    }
+
+    /***
+     * 增加多栏位并且赋值
+     * @param source
+     * @param propertyList
+     * @param valueList
+     * @param overWrite
+     * @return
+     */
+    public static Object addObjectPropertys(Object source, List<String> propertyList, List<Object> valueList, Class common,boolean overWrite) {
         BeanGenerator generator = new BeanGenerator();
         generator.setSuperclass(source.getClass());
         if (propertyList == null || valueList == null || propertyList.size() == 0 || valueList.size() == 0 || propertyList.size() != valueList.size()) {
@@ -434,11 +479,12 @@ public class ReflectionUtils {
                 if (propertyName == null || "".equals(propertyName)) {
                     continue;
                 }
-                setValue(target, propertyName, value);
+                setValue(target, propertyName, value,overWrite);
             }
         }
         return target;
     }
+
     /***
      * 设置clig对象和普通对象的属性，基本上都是通吃
      * 优化后可以实现所有的
@@ -447,10 +493,26 @@ public class ReflectionUtils {
      * @param value
      */
     public static void setValue(Object obj, String property, Object value) {
+        setValue(obj,property,value,true);
+    }
+
+    /**
+     * 是否覆盖值
+     * @param obj
+     * @param property
+     * @param value
+     * @param overWrite
+     */
+    public static void setValue(Object obj, String property, Object value,boolean overWrite) {
         if (isPropertyChain(obj, property)) {
-            setFieldValue(obj, property, value);
+            setFieldValue(obj, property, value,overWrite);
         } else {
             BeanMap beanMap = BeanMap.create(obj);
+            //当前值
+            Object current=beanMap.get(property);
+            if(!overWrite&&current!=null){
+                return;
+            }
             beanMap.put(property, value);
         }
     }
@@ -477,6 +539,7 @@ public class ReflectionUtils {
 
     /**
      * 判断属性是不是链式的set方法
+     *
      * @param obj
      * @param property
      * @return
@@ -524,6 +587,26 @@ public class ReflectionUtils {
     }
 
     /**
+     * 获取利用反射获取类里面的值和名称
+     *
+     * @param obj
+     * @return
+     * @throws IllegalAccessException
+     */
+    public static Map<String, Object> objectToMap(Object obj) throws IllegalAccessException {
+        Map<String, Object> map = new HashMap<>();
+        Class<?> clazz = obj.getClass();
+        System.out.println(clazz);
+        for (Field field : clazz.getDeclaredFields()) {
+            field.setAccessible(true);
+            String fieldName = field.getName();
+            Object value = field.get(obj);
+            map.put(fieldName, value);
+        }
+        return map;
+    }
+
+    /**
      * 获取零值
      *
      * @param type
@@ -549,6 +632,63 @@ public class ReflectionUtils {
         }
         return null;
     }
+
+
+    /**
+     * 将目标对象的属性及其父类的属性 转换成map集合name-field
+     *
+     * @param clazz
+     * @return
+     */
+    public static Map<String, Field> getFieldMap(Class<?> clazz) {
+        List<Field> fieldList = getFieldList(clazz);
+        return fieldList.stream().filter(f -> f.getModifiers() != 26).collect(Collectors.toMap(e -> e.getName(), e -> e));
+    }
+
+    /**
+     * 将目标对象的属性及其父类的属性 转换成map集合name-field
+     * 字段都设置为可访问
+     *
+     * @param clazz
+     * @return
+     */
+    public static Map<String, Field> getFieldMap(Class<?> clazz, boolean accessible) {
+        List<Field> fieldList = getFieldList(clazz);
+        return fieldList.stream().filter(f -> f.getModifiers() != 26)
+                .peek(elem -> elem.setAccessible(accessible))
+                .collect(Collectors.toMap(e -> e.getName(), e -> e));
+    }
+
+    /**
+     * 将源对象的属性及其父类的属性转成集合
+     *
+     * @param clazz
+     * @return
+     */
+    public static List<Field> getFieldList(Class<?> clazz) {
+        List<Field> fieldList = new ArrayList<>();
+        while (clazz != null) {
+            fieldList.addAll(new ArrayList<>(Arrays.asList(clazz.getDeclaredFields())));
+            clazz = clazz.getSuperclass();
+        }
+        return fieldList;
+    }
+
+/*    public static <T> T getFullObject(T t1, T t2) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        Class<?> clazz = t1.getClass();
+        T temp = (T) clazz.getDeclaredConstructor().newInstance();
+        BeanUtils.copyProperties(t1, temp);
+        List<Field> fieldList = getFieldList(clazz);
+        //找temp的空字段
+        List<Field> notNullField = fieldList
+                .stream()
+                .filter(e -> null == getFieldValue(temp, e.getName()))
+                .collect(Collectors.toList());
+        //t2进行填充
+        notNullField.stream()
+                .forEach(e -> setFieldValue(temp, e.getName(), getFieldValue(t2, e.getName())));
+        return temp;
+    }*/
 
     public static class Son {
         private String name;
@@ -644,28 +784,5 @@ public class ReflectionUtils {
         Class<?> type = field.getType();
         System.out.println(type);
         System.out.println(isBaseType(field));*/
-    }
-
-    /**
-     * 类型                 int        二进制
-     *
-     * PUBLIC:           1             1
-     * PRIVATE:         2             10
-     * PROTECTED: 4              100
-     * STATIC:           8              1000
-     * FINAL:           16             10000
-     * SYNCHRONIZED: 32     100000
-     * VOLATILE: 64                 1000000
-     * TRANSIENT: 128            10000000
-     * NATIVE: 256                    100000000
-     * INTERFACE: 512             1000000000
-     * ABSTRACT: 1024            10000000000
-     * STRICT: 2048                  100000000000
-     * @param field
-     * @return
-     */
-    //判断是不是private类型方法
-    public static boolean isTransient(Field field) {
-        return ((field.getModifiers() & 0x80) != 0);
     }
 }

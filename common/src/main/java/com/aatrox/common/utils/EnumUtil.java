@@ -50,17 +50,32 @@ public class EnumUtil {
      */
     private static List<Map<String, Object>> getEnumContent(Class<?> class1) {
         List<?> list = Arrays.asList(class1.getEnumConstants());
-        List<Method> methods = Arrays.asList(class1.getDeclaredMethods()).stream().filter(method -> method.getName().contains("get")).collect(Collectors.toList());
+        List<Method> methods = Arrays.stream(class1.getDeclaredMethods()).filter(method -> method.getName().contains("get")).collect(Collectors.toList());
         List<Map<String, Object>> list2 = ListUtil.NEW();
-        list.forEach(enumClasses -> methods.forEach(method -> {
-            try {
-                list2.add(MapUtil.NEW("name", method.invoke(enumClasses), "value", enumClasses.toString()));
-            } catch (Exception e1) {
-                e1.printStackTrace();
-            }
-        }));
+        list.forEach(enumClasses -> {
+            Map<String, Object> params = new HashMap<>();
+            params.put("name", enumClasses.toString());
+            methods.forEach(method -> {
+                String methodName = method.getName();
+                if (methodName.startsWith("get") && method.getParameterTypes().length == 0) {
+                    try {
+                        String methodNameStr = methodName.split("get")[1];
+                        String fieldName = methodNameStr.substring(0, 1).toLowerCase() + methodNameStr.substring(1);
+                        params.put(fieldName, method.invoke(enumClasses));
+                    } catch (Exception e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            });
+            list2.add(params);
+        });
         return list2;
     }
+
+
+//    public static void main(String[] args) {
+//        System.out.println(JSON.toJSONString(EnumUtil.getEnumContent(StatusEnum.class)));
+//    }
 
     /**
      * 扫描坐标类所在的包下，所有的枚举
@@ -218,4 +233,5 @@ public class EnumUtil {
             }
         }
     }
+
 }
