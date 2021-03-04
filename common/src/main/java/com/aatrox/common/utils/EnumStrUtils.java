@@ -2,15 +2,13 @@ package com.aatrox.common.utils;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import org.springframework.util.CollectionUtils;
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.*;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -99,7 +97,7 @@ public class EnumStrUtils {
             try {
                 field.setAccessible(true);
                 if (!ReflectionUtils.isBaseType(field) && !field.getType().isEnum()) {
-                    ReflectionUtils.setFieldValue(object, field.getName(), toObjectAddEnumStr(field.get(object)),false);
+                    ReflectionUtils.setFieldValue(object, field.getName(), toObjectAddEnumStr(field.get(object)),true);
 
                 }
             } catch (Exception e) {
@@ -170,20 +168,58 @@ public class EnumStrUtils {
         if (enumCollect == null || enumCollect.size() == 0) {
             return source;
         }
-        List<String> propertyName = new ArrayList<>();
+        Set<String> enumSet = enumCollect.stream().map(item -> item.getName() + "Str").collect(Collectors.toSet());
+        Map<String,Object> defineEnumStrMap = beanToMapByGet(source, new HashSet(enumSet));
+        List<String> propertyNameList = new ArrayList<>();
         List<Object> valueList = new ArrayList<>();
         enumCollect.forEach(field -> {
             try {
                 field.setAccessible(true);
-                propertyName.add(field.getName() + "Str");
+                String propertyName = field.getName() + "Str";
+                propertyNameList.add(propertyName);
                 Class clz = Class.forName(field.getGenericType().getTypeName());
-                valueList.add(getEnumStr(clz, field.get(source) == null ? null : ((Enum) field.get(source)).name()));
+                String enumStr = getEnumStr(clz, field.get(source) == null ? null : ((Enum) field.get(source)).name());
+                enumStr=defineEnumStrMap.get(propertyName)==null?enumStr:String.valueOf(defineEnumStrMap.get(propertyName));
+                valueList.add(enumStr);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
-        return ReflectionUtils.addObjectPropertys(source, propertyName, valueList, String.class,false);
+        return ReflectionUtils.addObjectPropertys(source, propertyNameList, valueList, String.class,false);
     }
+
+    /**
+     *
+     * @param bean
+     * @param includeSet
+     * @return
+     */
+    public static Map<String,Object> beanToMapByGet(Object bean, Set<String> includeSet) {
+        Map<String,Object> propertyMap = new LinkedHashMap();
+        try {
+            Class clazz = bean.getClass();
+            BeanInfo beanInfo = Introspector.getBeanInfo(clazz);
+            PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
+            includeSet=Optional.ofNullable(includeSet).orElse(new HashSet<>());
+            if(CollectionUtils.isEmpty( includeSet)){
+                return propertyMap;
+            }
+            Set<String> finalIncludeSet = includeSet;
+            Arrays.stream(propertyDescriptors).filter(e-> !e.getName().equals("class")&&e.getReadMethod()!=null&& finalIncludeSet.contains(e.getName()))
+                    .forEach(item->{
+                        try {
+                            Object result = item.getReadMethod().invoke(bean, new Object[0]);
+                            propertyMap.put(item.getName(),result);
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return propertyMap;
+    }
+
 
     /**
      * 获取枚举的值
