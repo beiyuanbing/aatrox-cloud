@@ -250,7 +250,8 @@ public class EnumStrUtils {
                 stringBuilder.append(StringUtils.firstChToUpper(fieldName));
             }
             List<Method> methods = Arrays.stream(classz.getDeclaredMethods()).filter(method -> method.getName().contains(stringBuilder.toString())).collect(Collectors.toList());
-            return methods.stream().findFirst().get().invoke(o).toString();
+            Method descMethod = methods.stream().filter(e -> e.getName().equalsIgnoreCase("desc")).findFirst().orElse(methods.stream().findFirst().get());
+            return descMethod.invoke(o).toString();
         } catch (Exception e) {
             e.printStackTrace();
         }
