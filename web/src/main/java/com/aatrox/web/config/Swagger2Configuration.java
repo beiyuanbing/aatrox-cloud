@@ -1,10 +1,9 @@
 package com.aatrox.web.config;
 
-import com.aatrox.web.common.Env;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -21,12 +20,15 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import javax.annotation.Resource;
 
 /**
- * 访问地址：项目名/v2/api-docs
+ * {webAppName}
+ *
+ * @author {author}
  */
 @EnableSwagger2
 @Configuration
 @Profile("dev")
-public class Swagger2Config {
+public class Swagger2Configuration {
+
     @Resource
     private Environment env;
 
@@ -99,9 +101,10 @@ public class Swagger2Config {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("项目API")
+                .title("新房案场端API")
                 .version("1.0.0")
-                .description("项目API接口")
+                .description("新房案场端API接口")
                 .build();
     }
+
 }
